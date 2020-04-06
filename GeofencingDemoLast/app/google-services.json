@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "821342962132",
+    "firebase_url": "https://geofencingdemolast.firebaseio.com",
+    "project_id": "geofencingdemolast",
+    "storage_bucket": "geofencingdemolast.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821342962132:android:f26d36fba90aeaf49dd641",
+        "android_client_info": {
+          "package_name": "fkg.dev.geofencingdemolast"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "821342962132-pee4qnf30b9b683vkssg8h870mmhrl0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9_ebhgpP7dceYksXM21Q_mjr3QGr5uqk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "821342962132-pee4qnf30b9b683vkssg8h870mmhrl0f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
