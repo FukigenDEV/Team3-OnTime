@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1046590076902",
+    "firebase_url": "https://ontime-df086.firebaseio.com",
+    "project_id": "ontime-df086",
+    "storage_bucket": "ontime-df086.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046590076902:android:f757d89c9fef5e33434827",
+        "android_client_info": {
+          "package_name": "com.example.ontimeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046590076902-8mdglh0gdb0eqsp95dkjnk65a32i77th.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGBB8mnOM2-MuGix32Utp79qYftfuHFio"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046590076902-8mdglh0gdb0eqsp95dkjnk65a32i77th.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046590076902:android:483ef09f740c560e434827",
+        "android_client_info": {
+          "package_name": "com.example.testfcm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046590076902-8mdglh0gdb0eqsp95dkjnk65a32i77th.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGBB8mnOM2-MuGix32Utp79qYftfuHFio"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046590076902-8mdglh0gdb0eqsp95dkjnk65a32i77th.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
