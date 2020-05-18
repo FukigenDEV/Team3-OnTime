@@ -32,8 +32,34 @@ exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
 
 //END OF EXAMPLE FUNCTIONS, COPIED FROM FIREBASE DOCUMENTATION
 
+//SEND DEVICE TOKEN TO DB
 //Take a text parameter passed to HTTP endpoint and insert in into the database
 exports.sendDeviceToken = functions.https.onCall((data, context) => {
   const token = data.token
   return admin.database().ref('/devicetokens').push({token: token});
 });
+
+//SEND NOTIFICATION WHEN DEVICE TOKEN ADDED TO DB
+//Listens for new tokens added to /devicetokens/{pushId}/token and sends
+// notification the device of the new token
+exports.sendNotification = functions.database.ref('/devicetokens/{pushId}/token')
+    .onWrite((change, context) => {
+        const pushid = context.params.pushId;
+
+        var ref = admin.database().ref(`/devicetokens/${pushid}/token`);
+        return ref.once("value", function(snapshot){
+            const payload = {
+                notification: {
+                    title: 'Hello from Firebase',
+                    body: 'New user has been added to the database'
+                }
+            };
+
+            admin.messaging().sendToDevice(snapshot.val(), payload)
+            return snapshot.ref.parent.child('uppercase').set('notified');
+
+        }, function (errorObject){
+            console.log("The read failed: " + errorObject.code);
+        });
+    });
+
