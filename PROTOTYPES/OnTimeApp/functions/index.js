@@ -35,8 +35,13 @@ exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
 //SEND DEVICE TOKEN TO DB
 //Take a text parameter passed to HTTP endpoint and insert in into the database
 exports.sendDeviceToken = functions.https.onCall((data, context) => {
-  const token = data.token
-  return admin.database().ref('/devicetokens').push({token: token});
+    const token = data.token
+    return admin.database().ref('/devicetokens').push({
+        token: token
+    }).then(() => {
+          console.log('New Message written');
+          return { text: token };
+    })
 });
 
 //SEND NOTIFICATION WHEN DEVICE TOKEN ADDED TO DB
@@ -48,15 +53,22 @@ exports.sendNotification = functions.database.ref('/devicetokens/{pushId}/token'
 
         var ref = admin.database().ref(`/devicetokens/${pushid}/token`);
         return ref.once("value", function(snapshot){
+        const token = snapshot.val();
             const payload = {
-                notification: {
+                data: {
                     title: 'Hello from Firebase',
                     body: 'New user has been added to the database'
-                }
+                },
+                token: token
             };
 
-            admin.messaging().sendToDevice(snapshot.val(), payload)
-            return snapshot.ref.parent.child('uppercase').set('notified');
+            admin.messaging().send(payload)
+            .then(function(response) {
+                                return console.log("Successfully sent message:", response);
+                                })
+                                .catch(function(error) {
+                                  return console.log("Error sending message:", error);
+                                });
 
         }, function (errorObject){
             console.log("The read failed: " + errorObject.code);
