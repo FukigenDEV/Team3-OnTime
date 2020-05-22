@@ -29,10 +29,15 @@ exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
       return snapshot.ref.parent.child('uppercase').set(uppercase);
     });
 
+//exports.scheduledFunction = functions.pubsub.schedule('every 5 minutes').onRun((context) => {
+//  console.log('This will be run every 5 minutes!');
+//  return null;
+//});
+
 
 //END OF EXAMPLE FUNCTIONS, COPIED FROM FIREBASE DOCUMENTATION
 
-//SEND DEVICE TOKEN TO DB
+//SEND DEVICE TOKEN TO DB {{DEPRECATED}}
 //Take a text parameter passed to HTTP endpoint and insert in into the database
 exports.sendDeviceToken = functions.https.onCall((data, context) => {
     const token = data.token
@@ -45,30 +50,30 @@ exports.sendDeviceToken = functions.https.onCall((data, context) => {
 });
 
 //SEND NOTIFICATION WHEN DEVICE TOKEN ADDED TO DB
-//Listens for new tokens added to /devicetokens/{pushId}/token and sends
+// Listens for new tokens added to /Users/{AndroidID}/deviceToken and sends
 // notification the device of the new token
-exports.sendNotification = functions.database.ref('/devicetokens/{pushId}/token')
+exports.sendNotification = functions.database.ref('/Users/{AndroidID}/deviceToken')
     .onWrite((change, context) => {
-        const pushid = context.params.pushId;
+        const AndroidID = context.params.AndroidID;
 
-        var ref = admin.database().ref(`/devicetokens/${pushid}/token`);
+        var ref = admin.database().ref(`/Users/${AndroidID}/deviceToken`);
         return ref.once("value", function(snapshot){
-        const token = snapshot.val();
+        const deviceToken = snapshot.val();
             const payload = {
                 data: {
                     title: 'Hello from Firebase',
                     body: 'New user has been added to the database'
                 },
-                token: token
+                token: deviceToken
             };
 
             admin.messaging().send(payload)
             .then(function(response) {
-                                return console.log("Successfully sent message:", response);
-                                })
-                                .catch(function(error) {
-                                  return console.log("Error sending message:", error);
-                                });
+                return console.log("Successfully sent message:", response);
+                })
+                .catch(function(error) {
+                  return console.log("Error sending message:", error);
+                });
 
         }, function (errorObject){
             console.log("The read failed: " + errorObject.code);
