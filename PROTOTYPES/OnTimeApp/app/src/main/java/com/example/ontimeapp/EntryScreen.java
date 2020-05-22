@@ -36,9 +36,11 @@ public class EntryScreen extends AppCompatActivity {
                 if (dataSnapshot.child(androidId).exists()){
                     Toast.makeText(EntryScreen.this, "Android ID exists in database", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(EntryScreen.this, MainMenu.class));
+                    finish();
                 }else{
                     Toast.makeText(EntryScreen.this, androidId + "Android ID does not exist in database", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(EntryScreen.this, CreateUser.class));
+                    finish();
                 }
             }
 
