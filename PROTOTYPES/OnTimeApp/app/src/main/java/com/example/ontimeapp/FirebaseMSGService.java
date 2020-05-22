@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
@@ -36,20 +38,28 @@ public class FirebaseMSGService extends FirebaseMessagingService {
         String channelId = getString(R.string.notification_channel_id);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, requestID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Uri alarmSound = RingtoneManager.getDefaultUri((RingtoneManager.TYPE_NOTIFICATION));
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setVibrate(new long[] { 0, 1000, 1000, 1000, 1000 })
+                .setSound(alarmSound);;
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
                     "default channel",
-                    NotificationManager.IMPORTANCE_DEFAULT);
+                    NotificationManager.IMPORTANCE_HIGH);
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[] {0,1000,1000,1000,1000});
+            channel.setSound(alarmSound,null);
             notificationManager.createNotificationChannel(channel);
         }
 
