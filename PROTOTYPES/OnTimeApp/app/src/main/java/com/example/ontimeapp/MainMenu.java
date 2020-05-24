@@ -3,6 +3,7 @@ package com.example.ontimeapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,84 +25,45 @@ import java.util.Map;
 public class MainMenu extends AppCompatActivity {
 
     private static final String TAG = "MainMenu";
-    private FirebaseFunctions mFunctions;
+    String androidId, userName, userToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainmenu);
 
-        Button showinstanceid = findViewById(R.id.InstanceIdTest);
-        Button sendtodb = findViewById(R.id.sendInstanceId);
-        mFunctions = FirebaseFunctions.getInstance();
+        Button joinGroup = findViewById(R.id.JoinGroupBtn);
+        Button createGroup = findViewById(R.id.CreateGroupBtn);
 
-        showinstanceid.setOnClickListener(new View.OnClickListener() {
+        Intent intent = getIntent();
+        androidId = intent.getStringExtra("androidId");
+        userName = intent.getStringExtra("userName");
+        userToken = intent.getStringExtra("userToken");
+        Log.d("MESSAGECHECKMAINMENU", androidId + userName + userToken);
+
+        joinGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseInstanceId.getInstance().getInstanceId()
-                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                            if (!task.isSuccessful()){
-                                Log.w(TAG, "getInstanceId failed", task.getException());
-                                return;
-                            }
-                            String token = task.getResult().getToken();
-                            Log.d(TAG, token);
-                            Toast.makeText(MainMenu.this, token, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                Intent intent2 = new Intent(MainMenu.this, JoinGroup.class);
+                intent2.putExtra("androidId", androidId);
+                intent2.putExtra("userName", userName);
+                intent2.putExtra("userToken", userToken);
+                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
+                startActivity(intent2);
             }
         });
 
-        sendtodb.setOnClickListener(new View.OnClickListener() {
+        createGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseInstanceId.getInstance().getInstanceId()
-                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                if (!task.isSuccessful()){
-                                    Log.w(TAG, "getInstanceId failed", task.getException());
-                                    return;
-                                }
-                                String token = task.getResult().getToken();
-                                sendDeviceToken(token)
-                                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<String> task) {
-                                                if (!task.isSuccessful()){
-                                                    Exception e = task.getException();
-                                                    if (e instanceof FirebaseFunctionsException){
-                                                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
-                                                        FirebaseFunctionsException.Code code = ffe.getCode();
-                                                        Object details = ffe.getDetails();
-                                                    }
-                                                }
-                                            }
-                                        });
-                            }
-                        });
+                Intent intent2 = new Intent(MainMenu.this, CreateGroup.class);
+                intent2.putExtra("androidId", androidId);
+                intent2.putExtra("userName", userName);
+                intent2.putExtra("userToken", userToken);
+                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
+                startActivity(intent2);
             }
         });
-    }
-
-    private Task<String> sendDeviceToken (String token) {
-        // Create the arguments to the callable function.
-        Map<String, Object> data = new HashMap<>();
-        data.put("token", token);
-        data.put("push", true);
-
-        return mFunctions
-            .getHttpsCallable("sendDeviceToken")
-            .call(data)
-            .continueWith(new Continuation<HttpsCallableResult, String>() {
-                @Override
-                public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                    String result = (String) task.getResult().getData();
-                    return result;
-                }
-            });
     }
 }
 

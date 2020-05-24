@@ -1,5 +1,6 @@
 package com.example.ontimeapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -58,6 +59,11 @@ public class CreateUser extends AppCompatActivity {
                                     DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(androidId);
                                     databaseReference.setValue(userAdapter);
                                     Toast.makeText(CreateUser.this, "Database Updated", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(CreateUser.this, MainMenu.class);
+                                    intent.putExtra("androidId", androidId);
+                                    intent.putExtra("userName", name);
+                                    intent.putExtra("userToken", token);
+                                    startActivity(intent);
                                 }
                             });
                 }
