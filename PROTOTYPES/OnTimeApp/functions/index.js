@@ -37,22 +37,12 @@ exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
 
 //END OF EXAMPLE FUNCTIONS, COPIED FROM FIREBASE DOCUMENTATION
 
-//SEND DEVICE TOKEN TO DB {{DEPRECATED}}
-//Take a text parameter passed to HTTP endpoint and insert in into the database
-exports.sendDeviceToken = functions.https.onCall((data, context) => {
-    const token = data.token
-    return admin.database().ref('/devicetokens').push({
-        token: token
-    }).then(() => {
-          console.log('New Message written');
-          return { text: token };
-    })
-});
 
-//SEND NOTIFICATION WHEN DEVICE TOKEN ADDED TO DB
+//  --- TEST FUNCTION, CAN BE REMOVED ---
+// SEND NOTIFICATION WHEN DEVICE TOKEN ADDED TO DB
 // Listens for new tokens added to /Users/{AndroidID}/deviceToken and sends
 // notification the device of the new token
-exports.sendNotification = functions.database.ref('/Users/{AndroidID}/deviceToken')
+exports.newUserNotification = functions.database.ref('/Users/{AndroidID}/deviceToken')
     .onWrite((change, context) => {
         const AndroidID = context.params.AndroidID;
 
@@ -72,9 +62,41 @@ exports.sendNotification = functions.database.ref('/Users/{AndroidID}/deviceToke
                 return console.log("Successfully sent message:", response);
                 })
                 .catch(function(error) {
-                  return console.log("Error sending message:", error);
+                return console.log("Error sending message:", error);
                 });
 
+        }, function (errorObject){
+            console.log("The read failed: " + errorObject.code);
+        });
+    });
+
+//  --- TEST FUNCTION, CAN BE REMOVED ---
+
+exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Members/{AndroidID}')
+    .onWrite((change, context) => {
+        const GroupID = context.params.GroupID;
+        const AndroidID = context.params.AndroidID;
+
+        var ref = admin.database().ref(`/Groups/${GroupID}/Members`);
+        return ref.once("value", function(snapshot){
+            snapshot.forEach(function(childSnapshot){
+                const deviceToken = childSnapshot.child("deviceToken").val();
+                const payload = {
+                    data: {
+                        title: 'On Time - New addition to the team!',
+                        body: 'A new user has joined your group in the On Time app. Give them a warm welcome!'
+                    },
+                    token: deviceToken
+                };
+
+                admin.messaging().send(payload)
+                .then(function(response) {
+                    return console.log("Successfully sent message:", response);
+                    })
+                .catch(function(error) {
+                    return console.log("Error sending message:", error);
+                    });
+            });
         }, function (errorObject){
             console.log("The read failed: " + errorObject.code);
         });
