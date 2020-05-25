@@ -1,0 +1,7 @@
+#Mon May 18 11:22:32 CEST 2020
+base.0=C\:\\Users\\Matthijs\\Documents\\GitHub\\Team3-OnTime\\GeofencingDemoLast\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes.dex
+path.1=classes.dex
+renamed.1=classes2.dex
+path.0=classes.dex
+renamed.0=classes.dex
+base.1=C\:\\Users\\Matthijs\\Documents\\GitHub\\Team3-OnTime\\GeofencingDemoLast\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\out\\classes.dex
