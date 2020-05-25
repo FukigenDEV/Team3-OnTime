@@ -29,35 +29,74 @@ exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
       return snapshot.ref.parent.child('uppercase').set(uppercase);
     });
 
+//exports.scheduledFunction = functions.pubsub.schedule('every 5 minutes').onRun((context) => {
+//  console.log('This will be run every 5 minutes!');
+//  return null;
+//});
+
 
 //END OF EXAMPLE FUNCTIONS, COPIED FROM FIREBASE DOCUMENTATION
 
-//SEND DEVICE TOKEN TO DB
-//Take a text parameter passed to HTTP endpoint and insert in into the database
-exports.sendDeviceToken = functions.https.onCall((data, context) => {
-  const token = data.token
-  return admin.database().ref('/devicetokens').push({token: token});
-});
 
-//SEND NOTIFICATION WHEN DEVICE TOKEN ADDED TO DB
-//Listens for new tokens added to /devicetokens/{pushId}/token and sends
+//  --- TEST FUNCTION, CAN BE REMOVED ---
+// SEND NOTIFICATION WHEN DEVICE TOKEN ADDED TO DB
+// Listens for new tokens added to /Users/{AndroidID}/deviceToken and sends
 // notification the device of the new token
-exports.sendNotification = functions.database.ref('/devicetokens/{pushId}/token')
+exports.newUserNotification = functions.database.ref('/Users/{AndroidID}/deviceToken')
     .onWrite((change, context) => {
-        const pushid = context.params.pushId;
+        const AndroidID = context.params.AndroidID;
 
-        var ref = admin.database().ref(`/devicetokens/${pushid}/token`);
+        var ref = admin.database().ref(`/Users/${AndroidID}/deviceToken`);
         return ref.once("value", function(snapshot){
+        const deviceToken = snapshot.val();
             const payload = {
-                notification: {
+                data: {
                     title: 'Hello from Firebase',
                     body: 'New user has been added to the database'
-                }
+                },
+                token: deviceToken
             };
 
-            admin.messaging().sendToDevice(snapshot.val(), payload)
-            return snapshot.ref.parent.child('uppercase').set('notified');
+            admin.messaging().send(payload)
+            .then(function(response) {
+                return console.log("Successfully sent message:", response);
+                })
+                .catch(function(error) {
+                return console.log("Error sending message:", error);
+                });
 
+        }, function (errorObject){
+            console.log("The read failed: " + errorObject.code);
+        });
+    });
+
+//  --- TEST FUNCTION, CAN BE REMOVED ---
+
+exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Members/{AndroidID}')
+    .onWrite((change, context) => {
+        const GroupID = context.params.GroupID;
+        const AndroidID = context.params.AndroidID;
+
+        var ref = admin.database().ref(`/Groups/${GroupID}/Members`);
+        return ref.once("value", function(snapshot){
+            snapshot.forEach(function(childSnapshot){
+                const deviceToken = childSnapshot.child("deviceToken").val();
+                const payload = {
+                    data: {
+                        title: 'On Time - New addition to the team!',
+                        body: 'A new user has joined your group in the On Time app. Give them a warm welcome!'
+                    },
+                    token: deviceToken
+                };
+
+                admin.messaging().send(payload)
+                .then(function(response) {
+                    return console.log("Successfully sent message:", response);
+                    })
+                .catch(function(error) {
+                    return console.log("Error sending message:", error);
+                    });
+            });
         }, function (errorObject){
             console.log("The read failed: " + errorObject.code);
         });
