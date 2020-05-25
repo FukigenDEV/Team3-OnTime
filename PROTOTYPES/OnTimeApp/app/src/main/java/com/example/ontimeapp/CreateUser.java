@@ -54,7 +54,8 @@ public class CreateUser extends AppCompatActivity {
                                     String token = task.getResult().getToken();
                                     Log.d(TAG, token);
                                     Toast.makeText(CreateUser.this, token, Toast.LENGTH_SHORT).show();
-                                    UserAdapter userAdapter = new UserAdapter(name, token);
+                                    String[] tasks = new String[0];
+                                    UserAdapter userAdapter = new UserAdapter(name, token, tasks );
                                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                                     DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(androidId);
                                     databaseReference.setValue(userAdapter);
