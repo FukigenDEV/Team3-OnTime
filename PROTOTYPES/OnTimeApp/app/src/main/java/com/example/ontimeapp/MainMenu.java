@@ -34,12 +34,26 @@ public class MainMenu extends AppCompatActivity {
 
         Button joinGroup = findViewById(R.id.JoinGroupBtn);
         Button createGroup = findViewById(R.id.CreateGroupBtn);
+        Button setTasks = findViewById(R.id.SetTasksBtn);
 
         Intent intent = getIntent();
         androidId = intent.getStringExtra("androidId");
         userName = intent.getStringExtra("userName");
         userToken = intent.getStringExtra("userToken");
         Log.d("MESSAGECHECKMAINMENU", androidId + userName + userToken);
+
+        setTasks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(MainMenu.this, SetTasksActivity.class);
+                intent2.putExtra("androidId", androidId);
+                intent2.putExtra("userName", userName);
+                intent2.putExtra("userToken", userToken);
+                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
+                startActivity(intent2);
+            }
+
+        });
 
         joinGroup.setOnClickListener(new View.OnClickListener() {
             @Override
