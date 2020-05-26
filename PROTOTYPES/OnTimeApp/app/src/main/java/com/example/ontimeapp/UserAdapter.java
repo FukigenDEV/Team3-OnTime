@@ -4,15 +4,14 @@ public class UserAdapter {
 
     private String name;
     private String deviceToken;
-    private String[] tasks;
 
     public UserAdapter(){
     }
 
-    public UserAdapter(String name, String deviceToken, String[] tasks){
+    public UserAdapter(String name, String deviceToken){
         this.name = name;
         this.deviceToken = deviceToken;
-        this.tasks = tasks;
+
     }
 
     public void setName(String name){
@@ -31,7 +30,4 @@ public class UserAdapter {
         return deviceToken;
     }
 
-    public void setTasks(String[] tasks) {this.tasks = tasks;}
-
-    public String[] getTasks() {return tasks;}
 }
