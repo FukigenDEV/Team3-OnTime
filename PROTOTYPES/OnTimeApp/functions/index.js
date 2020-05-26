@@ -38,7 +38,6 @@ exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
 //END OF EXAMPLE FUNCTIONS, COPIED FROM FIREBASE DOCUMENTATION
 
 
-//  --- TEST FUNCTION, CAN BE REMOVED ---
 // SEND NOTIFICATION WHEN DEVICE TOKEN ADDED TO DB
 // Listens for new tokens added to /Users/{AndroidID}/deviceToken and sends
 // notification the device of the new token
@@ -70,8 +69,9 @@ exports.newUserNotification = functions.database.ref('/Users/{AndroidID}/deviceT
         });
     });
 
-//  --- TEST FUNCTION, CAN BE REMOVED ---
-
+// SEND NOTIFICATION WHEN USER ADDED TO
+// Listens for new tokens added to /Groups/{GroupID}/Members/{AndroidID} and sends
+// notification to the members of the groups telling them a new user has joined said group
 exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Members/{AndroidID}')
     .onWrite((change, context) => {
         const GroupID = context.params.GroupID;
@@ -101,4 +101,6 @@ exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Memb
             console.log("The read failed: " + errorObject.code);
         });
     });
+
+
 
