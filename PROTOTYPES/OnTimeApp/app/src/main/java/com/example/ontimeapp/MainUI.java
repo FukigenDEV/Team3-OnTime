@@ -1,9 +1,12 @@
 package com.example.ontimeapp;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,11 +40,14 @@ public class MainUI extends FragmentActivity {
         navLayoutList = Arrays.asList(global_nav, navParent);
         flGlobal = findViewById(R.id.global_framelayout);
 
+        @SuppressLint("HardwareIds") final String androidId = Settings.Secure.getString(MainUI.this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
         final TextView activityTitle = findViewById(R.id.title_activity);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         FragmentManagement fragmentManagement = new FragmentManagement();
-        fragmentManagement.setMainFragment(activityTitle, transaction, new HomeFragment(), "Home");
+        fragmentManagement.setMainFragment(activityTitle, transaction, new EntryScreen(), "Home");
 
         layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
