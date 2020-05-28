@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/test"
+    android:layout_height="54dp"
+    android:layout_width="260dp"
+    android:layout_marginBottom="1dp"
+    android:orientation="horizontal"
+    android:background="@color/colorNavItem"
+    >
+
+    <ImageView
+        android:id="@+id/navitem_icon"
+        android:src="@drawable/ic_iconmonstr_home_6"
+        android:layout_width="14sp"
+        android:layout_height="14sp"
+        android:layout_marginStart="16dp"
+        android:layout_gravity="center_vertical"
+        />
+
+    <TextView
+        android:id="@+id/navitem_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textAlignment="viewStart"
+        android:paddingStart="12dp"
+        android:text="Configuratie"
+        android:fontFamily="@font/opensans_light"
+        android:textSize="14sp"
+        android:textColor="@color/colorGlobal4"
+        />
+
+</LinearLayout>
