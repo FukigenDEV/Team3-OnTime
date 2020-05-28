@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,13 +25,25 @@ import com.google.firebase.functions.HttpsCallableResult;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainMenu extends Fragment {
+public class MainMenu extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "MainMenu";
     String androidId, userName, userToken;
+    Button joinGroup, createGroup, setTasks;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Bundle args = getArguments();
+        androidId = args.getString("androidId");
+        userName = args.getString("userName");
+        userToken = args.getString("userToken");
+    }
 
     public MainMenu() {
         // Required empty public constructor
@@ -41,76 +54,86 @@ public class MainMenu extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_mainmenu, container, false);
 
+        joinGroup = rootView.findViewById(R.id.JoinGroupBtn);
+        createGroup = rootView.findViewById(R.id.CreateGroupBtn);
+        setTasks = rootView.findViewById(R.id.SetTasksBtn);
+
+        Log.d("MESSAGECHECKMAINMENU", androidId + userName + userToken);
+
+        setTasks.setOnClickListener(this);
+        createGroup.setOnClickListener(this);
+        joinGroup.setOnClickListener(this);
+
+        // Inflate the layout for this fragment
+        return rootView;
+    }
+
+    public void onClick(View v) {
         final FragmentManagement fragmentManagement = new FragmentManagement();
         final FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-        View mainUI = inflater.inflate(R.layout.activity_main, null, false);
-        final TextView activityTitle = mainUI.findViewById(R.id.title_activity);
+        int viewId = v.getId();
 
+        if (viewId == R.id.SetTasksBtn) {
+            Fragment setTaskActivity = new SetTasksActivity();
+            Bundle bundle = new Bundle();
+            bundle.putString("androidId", androidId);
+            bundle.putString("userName", userName);
+            bundle.putString("userToken", userToken);
+            setTaskActivity.setArguments(bundle);
+            fragmentManagement.setMainFragment(setTasks, transaction, setTaskActivity, "Set Tasks");
+        } else if (viewId == R.id.JoinGroupBtn) {
+            Fragment joinGroup = new JoinGroup();
+            Bundle bundle = new Bundle();
+            bundle.putString("androidId", androidId);
+            bundle.putString("userName", userName);
+            bundle.putString("userToken", userToken);
+            joinGroup.setArguments(bundle);
+            fragmentManagement.setMainFragment(setTasks, transaction, joinGroup, "Join Group");
+        }
+//        } else if(viewId == R.id.CreateGroupBtn) {
+//            Fragment createGroup = new CreateGroup();
+//            Bundle bundle = new Bundle();
+//            bundle.putString("androidId", androidId);
+//            bundle.putString("userName", userName);
+//            bundle.putString("userToken", userToken);
+//            createGroup.setArguments(bundle);
+    }
 
-        Button joinGroup = rootView.findViewById(R.id.JoinGroupBtn);
-        Button createGroup = rootView.findViewById(R.id.CreateGroupBtn);
-        Button setTasks = rootView.findViewById(R.id.SetTasksBtn);
-
-        Bundle args = getArguments();
-        androidId = args.getString("androidId");
-        userName = args.getString("userName");
-        userToken = args.getString("userToken");
-//        Intent intent = getIntent();
-//        androidId = intent.getStringExtra("androidId");
-//        userName = intent.getStringExtra("userName");
-//        userToken = intent.getStringExtra("userToken");
-        Log.d("MESSAGECHECKMAINMENU", androidId + userName + userToken);
-
-        setTasks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Fragment setTaskActivity = new SetTasksActivity();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("androidId", androidId);
-//                bundle.putString("userName", userName);
-//                bundle.putString("userToken", userToken);
-//                setTaskActivity.setArguments(bundle);
-//
-//                fragmentManagement.setMainFragment(activityTitle, transaction, setTaskActivity, "Main Menu");
-
+//        setTasks.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //                Intent intent2 = new Intent(MainMenu.this, SetTasksActivity.class);
 //                intent2.putExtra("androidId", androidId);
 //                intent2.putExtra("userName", userName);
 //                intent2.putExtra("userToken", userToken);
-                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
+//                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
 //                startActivity(intent2);
-            }
-
-        });
-
-        joinGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//            }
+//
+//        });
+//
+//        joinGroup.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //                Intent intent2 = new Intent(MainMenu.this, JoinGroup.class);
 //                intent2.putExtra("androidId", androidId);
 //                intent2.putExtra("userName", userName);
 //                intent2.putExtra("userToken", userToken);
-                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
+//                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
 //                startActivity(intent2);
-            }
-        });
-
-        createGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//            }
+//        });
+//
+//        createGroup.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //                Intent intent2 = new Intent(MainMenu.this, CreateGroup.class);
 //                intent2.putExtra("androidId", androidId);
 //                intent2.putExtra("userName", userName);
 //                intent2.putExtra("userToken", userToken);
-                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
+//                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
 //                startActivity(intent2);
-            }
-        });
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_mainmenu, container, false);
-    }
+//            }
+//        });
 }
-
-
