@@ -54,7 +54,7 @@ public class SetTasksActivity extends AppCompatActivity {
                                     String token = task.getResult().getToken();
                                     Log.d(TAG, token);
                                     Toast.makeText(SetTasksActivity.this, token, Toast.LENGTH_SHORT).show();
-                                    UserAdapter userAdapter = new UserAdapter(tasktext, token);
+                                    UserAdapter userAdapter = new UserAdapter(tasktext, token, "");
                                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                                     DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(androidId).child("Tasks").child(tasktext);
                                     databaseReference.setValue("Not finished");

@@ -22,9 +22,11 @@ import com.google.firebase.iid.InstanceIdResult;
 public class CreateUser extends AppCompatActivity {
 
     private EditText etName;
+    private EditText etPhone;
     private Button confirmName;
 
     String name;
+    String phone;
     private static final String TAG = "CreateUser";
 
     @Override
@@ -32,6 +34,7 @@ public class CreateUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createuser);
         etName = (EditText)findViewById(R.id.etName);
+        etPhone = (EditText)findViewById(R.id.etPhone);
         confirmName = (Button)findViewById(R.id.confirmName);
         final String androidId = Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.ANDROID_ID);
@@ -40,7 +43,8 @@ public class CreateUser extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 name = etName.getText().toString();
-                if (name.isEmpty()){
+                phone = etPhone.getText().toString();
+                if (name.isEmpty() || phone.isEmpty()){
                     Toast.makeText(CreateUser.this, "Please enter a name!", Toast.LENGTH_SHORT).show();
                 }else{
                     FirebaseInstanceId.getInstance().getInstanceId()
@@ -54,7 +58,7 @@ public class CreateUser extends AppCompatActivity {
                                     String token = task.getResult().getToken();
                                     Log.d(TAG, token);
                                     Toast.makeText(CreateUser.this, token, Toast.LENGTH_SHORT).show();
-                                    UserAdapter userAdapter = new UserAdapter(name, token);
+                                    UserAdapter userAdapter = new UserAdapter(name, token, phone);
                                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                                     DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(androidId);
                                     databaseReference.setValue(userAdapter);
