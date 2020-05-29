@@ -69,14 +69,14 @@ public class CreateGroup extends Fragment implements View.OnClickListener {
             name = etgroupName.getText().toString();
             groupId = generateId(10);
 
-            GroupAdapter groupAdapter = new GroupAdapter(groupId, name);
+            Group group = new Group(groupId, name);
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             DatabaseReference databaseReference1 = firebaseDatabase.getReference().child("Groups").child(groupId);
-            databaseReference1.setValue(groupAdapter);
+            databaseReference1.setValue(group);
 
-            AddMemberAdapter addMemberAdapter = new AddMemberAdapter(userName, userToken);
+            User user = new User(userName, userToken, "");
             DatabaseReference databaseReference2 = firebaseDatabase.getReference().child("Groups").child(groupId).child("Members").child(androidId);
-            databaseReference2.setValue(addMemberAdapter);
+            databaseReference2.setValue(user);
 
             Toast.makeText(getContext(), "Group Successfully created!", Toast.LENGTH_SHORT).show();
 

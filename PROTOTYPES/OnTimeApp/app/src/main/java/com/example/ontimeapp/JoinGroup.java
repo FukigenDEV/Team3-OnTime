@@ -80,8 +80,8 @@ public class JoinGroup extends Fragment implements View.OnClickListener {
                         if (dataSnapshot.child(groupid).child("Members").child(androidId).exists()){
                             Toast.makeText(getActivity(), "You are already a member of this group", Toast.LENGTH_SHORT).show();
                         }else{
-                            AddMemberAdapter addMemberAdapter = new AddMemberAdapter(userName, userToken);
-                            databaseReference1.child(groupid).child("Members").child(androidId).setValue(addMemberAdapter);
+                            User user = new User(userName, userToken, "");
+                            databaseReference1.child(groupid).child("Members").child(androidId).setValue(user);
                             Toast.makeText(getActivity(), "Successfully joined the group!", Toast.LENGTH_SHORT).show();
                         }
                     }else{

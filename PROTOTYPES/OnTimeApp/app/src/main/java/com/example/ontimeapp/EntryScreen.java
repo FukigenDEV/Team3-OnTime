@@ -1,6 +1,7 @@
 package com.example.ontimeapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -15,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.work.Constraints;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,12 +28,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.util.concurrent.TimeUnit;
+
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static androidx.core.content.ContextCompat.getSystemService;
 
 public class EntryScreen extends Fragment {
 
     private static final String TAG = "EntryScreen";
+    private Context context;
 
     public EntryScreen() {
         // Required empty public constructor
@@ -56,10 +63,10 @@ public class EntryScreen extends Fragment {
 
                 if (dataSnapshot.child(androidId).exists()){
                     Toast.makeText(getActivity(), "Android ID exists in database", Toast.LENGTH_SHORT).show();
-                    AddMemberAdapter addMemberAdapter = dataSnapshot.child(androidId).getValue(AddMemberAdapter.class);
+                    User user = dataSnapshot.child(androidId).getValue(User.class);
 
-                    String userName = addMemberAdapter.getName();
-                    String userToken = addMemberAdapter.getDeviceToken();
+                    String userName = user.getName();
+                    String userToken = user.getDeviceToken();
 
                     Fragment mainMenu = new MainMenu();
                     Bundle bundle = new Bundle();

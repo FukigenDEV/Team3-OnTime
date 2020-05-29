@@ -9,7 +9,7 @@ public class User {
 
     public User(){
     }
-    public UserAdapter(String name, String deviceToken, String phone) {
+    public User(String name, String deviceToken, String phone) {
         this.name = name;
         this.deviceToken = deviceToken;
         this.phone = phone;

@@ -3,8 +3,12 @@ package com.example.ontimeapp;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.work.Constraints;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -17,8 +21,11 @@ import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainUI extends FragmentActivity {
+
+    private Context context;
 
     ImageView icNav;
     LinearLayout navParent, global_nav;
@@ -116,6 +123,16 @@ public class MainUI extends FragmentActivity {
                 Log.d("navParent XPos", ""+navParent.getTranslationX());
             }
         });
+
+        Constraints constraints = new Constraints.Builder()
+                .build();
+
+        PeriodicWorkRequest syncAlarmRequest =
+                new PeriodicWorkRequest.Builder(AlarmSyncWorker.class, 15, TimeUnit.MINUTES)
+                        .setConstraints(constraints)
+                        .build();
+
+        WorkManager.getInstance(context).enqueue(syncAlarmRequest);
     }
 
     public static class NavItem {
