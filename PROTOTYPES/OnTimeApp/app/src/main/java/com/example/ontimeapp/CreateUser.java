@@ -45,7 +45,7 @@ public class CreateUser extends AppCompatActivity {
                 name = etName.getText().toString();
                 phone = etPhone.getText().toString();
                 if (name.isEmpty() || phone.isEmpty()){
-                    Toast.makeText(CreateUser.this, "Please enter a name!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateUser.this, "Please enter fill in all fields!", Toast.LENGTH_SHORT).show();
                 }else{
                     FirebaseInstanceId.getInstance().getInstanceId()
                             .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
