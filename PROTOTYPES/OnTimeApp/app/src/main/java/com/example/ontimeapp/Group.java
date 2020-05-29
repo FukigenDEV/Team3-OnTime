@@ -1,14 +1,14 @@
 package com.example.ontimeapp;
 
-public class GroupAdapter {
+public class Group {
 
     private String groupId;
     private String groupName;
 
-    public GroupAdapter(){
+    public Group(){
     }
 
-    public GroupAdapter(String groupId, String groupName){
+    public Group(String groupId, String groupName){
         this.groupId = groupId;
         this.groupName = groupName;
     }
