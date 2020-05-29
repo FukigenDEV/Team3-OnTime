@@ -29,9 +29,10 @@ import com.google.firebase.iid.InstanceIdResult;
 public class CreateUser extends Fragment implements View.OnClickListener {
 
     private EditText etName;
+    private EditText etPhone;
     private Button confirmName;
 
-    String name, androidId;
+    String name, phone, androidId;
     private static final String TAG = "CreateUser";
 
     @Override
@@ -52,6 +53,7 @@ public class CreateUser extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.activity_createuser, container, false);
 
         etName = rootView.findViewById(R.id.etName);
+        etPhone = rootView.findViewById(R.id.etPhone);
         confirmName = rootView.findViewById(R.id.confirmName);
 
         confirmName.setOnClickListener(this);
@@ -64,8 +66,9 @@ public class CreateUser extends Fragment implements View.OnClickListener {
 
         if(v.getId() == R.id.confirmName) {
             name = etName.getText().toString();
-            if (name.isEmpty()){
-                Toast.makeText(getActivity(), "Please enter a name!", Toast.LENGTH_SHORT).show();
+            phone = etPhone.getText().toString();
+            if (name.isEmpty() || phone.isEmpty()){
+                Toast.makeText(getActivity(), "Please fill in the fields!", Toast.LENGTH_SHORT).show();
             }else {
                 FirebaseInstanceId.getInstance().getInstanceId()
                     .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -78,7 +81,7 @@ public class CreateUser extends Fragment implements View.OnClickListener {
                             String token = task.getResult().getToken();
                             Log.d(TAG, token);
                             Toast.makeText(getActivity(), token, Toast.LENGTH_SHORT).show();
-                            UserAdapter userAdapter = new UserAdapter(name, token);
+                            UserAdapter userAdapter = new UserAdapter(name, token, phone);
                             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                             DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(androidId);
                             databaseReference.setValue(userAdapter);
