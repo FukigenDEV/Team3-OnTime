@@ -54,10 +54,10 @@ public class CreateUser extends AppCompatActivity {
                                     String token = task.getResult().getToken();
                                     Log.d(TAG, token);
                                     Toast.makeText(CreateUser.this, token, Toast.LENGTH_SHORT).show();
-                                    UserAdapter userAdapter = new UserAdapter(name, token);
+                                    User user = new User(name, token);
                                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                                     DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(androidId);
-                                    databaseReference.setValue(userAdapter);
+                                    databaseReference.setValue(user);
                                     Toast.makeText(CreateUser.this, "Database Updated", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(CreateUser.this, MainMenu.class);
                                     intent.putExtra("androidId", androidId);

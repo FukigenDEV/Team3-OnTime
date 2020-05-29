@@ -2,7 +2,6 @@ package com.example.ontimeapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -55,8 +54,8 @@ public class JoinGroup extends AppCompatActivity {
                             if (dataSnapshot.child(groupid).child("Members").child(androidId).exists()){
                                 Toast.makeText(JoinGroup.this, "You are already a member of this group", Toast.LENGTH_SHORT).show();
                             }else{
-                                AddMemberAdapter addMemberAdapter = new AddMemberAdapter(userName, userToken);
-                                databaseReference1.child(groupid).child("Members").child(androidId).setValue(addMemberAdapter);
+                                User user = new User(userName, userToken);
+                                databaseReference1.child(groupid).child("Members").child(androidId).setValue(user);
                                 Toast.makeText(JoinGroup.this, "Successfully joined the group!", Toast.LENGTH_SHORT).show();
                             }
                         }else{

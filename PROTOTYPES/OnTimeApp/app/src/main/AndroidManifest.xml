@@ -19,7 +19,9 @@
         <activity android:name=".MainMenu"></activity>
         <activity android:name=".CreateUser"></activity>
         <activity android:name=".JoinGroup"></activity>
-        <activity android:name="CreateGroup"></activity>
+        <activity android:name=".CreateGroup"></activity>
+        <activity android:name=".SelectedGroup"></activity>
+
 
 
         <service

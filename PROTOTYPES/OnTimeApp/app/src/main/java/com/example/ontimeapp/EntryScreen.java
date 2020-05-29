@@ -1,13 +1,16 @@
 package com.example.ontimeapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Constraints;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,9 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.concurrent.TimeUnit;
+
 public class EntryScreen extends AppCompatActivity {
 
     private static final String TAG = "EntryScreen";
+    private Context Context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -35,10 +41,10 @@ public class EntryScreen extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(androidId).exists()){
                     Toast.makeText(EntryScreen.this, "Android ID exists in database", Toast.LENGTH_SHORT).show();
-                    AddMemberAdapter addMemberAdapter = dataSnapshot.child(androidId).getValue(AddMemberAdapter.class);
+                    User user = dataSnapshot.child(androidId).getValue(User.class);
 
-                    String userName = addMemberAdapter.getName();
-                    String userToken = addMemberAdapter.getDeviceToken();
+                    String userName = user.getName();
+                    String userToken = user.getDeviceToken();
 
                     Intent intent2 = new Intent(EntryScreen.this, MainMenu.class);
                     intent2.putExtra("androidId", androidId);
@@ -58,5 +64,15 @@ public class EntryScreen extends AppCompatActivity {
                 Toast.makeText(EntryScreen.this, databaseError.getCode(), Toast.LENGTH_SHORT);
             }
         });
+
+        Constraints constraints = new Constraints.Builder()
+                .build();
+
+        PeriodicWorkRequest syncAlarmRequest =
+                new PeriodicWorkRequest.Builder(AlarmSyncWorker.class, 15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(Context).enqueue(syncAlarmRequest);
     }
 }

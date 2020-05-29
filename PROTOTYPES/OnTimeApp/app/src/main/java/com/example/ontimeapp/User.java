@@ -1,14 +1,14 @@
 package com.example.ontimeapp;
 
-public class AddMemberAdapter {
+public class User {
 
     private String name;
     private String deviceToken;
 
-    public AddMemberAdapter(){
+    public User(){
     }
 
-    public AddMemberAdapter(String name, String deviceToken){
+    public User(String name, String deviceToken){
         this.name = name;
         this.deviceToken = deviceToken;
     }
@@ -28,5 +28,4 @@ public class AddMemberAdapter {
     public String getDeviceToken(){
         return deviceToken;
     }
-
 }
