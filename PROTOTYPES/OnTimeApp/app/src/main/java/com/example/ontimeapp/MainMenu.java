@@ -74,66 +74,23 @@ public class MainMenu extends Fragment implements View.OnClickListener {
 
         int viewId = v.getId();
 
+        Bundle bundle = new Bundle();
+        bundle.putString("androidId", androidId);
+        bundle.putString("userName", userName);
+        bundle.putString("userToken", userToken);
+
         if (viewId == R.id.SetTasksBtn) {
             Fragment setTaskActivity = new SetTasksActivity();
-            Bundle bundle = new Bundle();
-            bundle.putString("androidId", androidId);
-            bundle.putString("userName", userName);
-            bundle.putString("userToken", userToken);
             setTaskActivity.setArguments(bundle);
             fragmentManagement.setMainFragment(setTasks, transaction, setTaskActivity, "Set Tasks");
         } else if (viewId == R.id.JoinGroupBtn) {
             Fragment joinGroup = new JoinGroup();
-            Bundle bundle = new Bundle();
-            bundle.putString("androidId", androidId);
-            bundle.putString("userName", userName);
-            bundle.putString("userToken", userToken);
             joinGroup.setArguments(bundle);
             fragmentManagement.setMainFragment(setTasks, transaction, joinGroup, "Join Group");
+        } else if(viewId == R.id.CreateGroupBtn) {
+            Fragment createGroup = new CreateGroup();
+            createGroup.setArguments(bundle);
+            fragmentManagement.setMainFragment(setTasks, transaction, createGroup, "Create Group");
         }
-//        } else if(viewId == R.id.CreateGroupBtn) {
-//            Fragment createGroup = new CreateGroup();
-//            Bundle bundle = new Bundle();
-//            bundle.putString("androidId", androidId);
-//            bundle.putString("userName", userName);
-//            bundle.putString("userToken", userToken);
-//            createGroup.setArguments(bundle);
     }
-
-//        setTasks.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent2 = new Intent(MainMenu.this, SetTasksActivity.class);
-//                intent2.putExtra("androidId", androidId);
-//                intent2.putExtra("userName", userName);
-//                intent2.putExtra("userToken", userToken);
-//                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
-//                startActivity(intent2);
-//            }
-//
-//        });
-//
-//        joinGroup.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent2 = new Intent(MainMenu.this, JoinGroup.class);
-//                intent2.putExtra("androidId", androidId);
-//                intent2.putExtra("userName", userName);
-//                intent2.putExtra("userToken", userToken);
-//                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
-//                startActivity(intent2);
-//            }
-//        });
-//
-//        createGroup.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent2 = new Intent(MainMenu.this, CreateGroup.class);
-//                intent2.putExtra("androidId", androidId);
-//                intent2.putExtra("userName", userName);
-//                intent2.putExtra("userToken", userToken);
-//                Log.d("MESSAGECHECKBUTTON", androidId + userName + userToken);
-//                startActivity(intent2);
-//            }
-//        });
 }

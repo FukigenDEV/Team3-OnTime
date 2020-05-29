@@ -93,11 +93,6 @@ public class SetTasksActivity extends Fragment implements View.OnClickListener {
                                 bundle.putString("userToken", userToken);
                                 mainMenu.setArguments(bundle);
                                 fragmentManagement.setMainFragment(confirm, transaction, mainMenu, "Set Task");
-//                                Intent intent = new Intent(SetTasksActivity.this, MainMenu.class);
-//                                intent.putExtra("androidId", androidId);
-//                                intent.putExtra("userName", tasktext);
-//                                intent.putExtra("userToken", token);
-//                                startActivity(intent);
                             }
                         });
             }

@@ -1,21 +1,27 @@
 package com.example.ontimeapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Random;
 
-public class CreateGroup extends AppCompatActivity {
+public class CreateGroup extends Fragment implements View.OnClickListener {
 
     private EditText etgroupName;
     private Button confirmGroupNamebtn;
@@ -26,38 +32,63 @@ public class CreateGroup extends AppCompatActivity {
 
     private static final String TAG = "CreateGroup";
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Bundle args = getArguments();
+        androidId = args.getString("androidId");
+        userName = args.getString("userName");
+        userToken = args.getString("userToken");
+    }
+
+    public CreateGroup() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_creategroup);
-        etgroupName = (EditText)findViewById(R.id.etgroupName);
-        confirmGroupNamebtn = (Button)findViewById(R.id.confirmGroupNamebtn);
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_creategroup, container, false);
 
-        Intent intent = getIntent();
-        androidId = intent.getStringExtra("androidId");
-        userName = intent.getStringExtra("userName");
-        userToken = intent.getStringExtra("userToken");
+        etgroupName = (EditText) rootView.findViewById(R.id.etgroupName);
+        confirmGroupNamebtn = (Button) rootView.findViewById(R.id.confirmGroupNamebtn);
 
-        confirmGroupNamebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                name = etgroupName.getText().toString();
-                groupId = generateId(10);
+        confirmGroupNamebtn.setOnClickListener(this);
 
-                GroupAdapter groupAdapter = new GroupAdapter(groupId, name);
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference1 = firebaseDatabase.getReference().child("Groups").child(groupId);
-                databaseReference1.setValue(groupAdapter);
+        return rootView;
+    }
 
-                AddMemberAdapter addMemberAdapter = new AddMemberAdapter(userName, userToken);
-                DatabaseReference databaseReference2 = firebaseDatabase.getReference().child("Groups").child(groupId).child("Members").child(androidId);
-                databaseReference2.setValue(addMemberAdapter);
+    @Override
+    public void onClick(View v) {
+        final FragmentManagement fragmentManagement = new FragmentManagement();
+        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-                Toast.makeText(CreateGroup.this, "Group Successfully created!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(CreateGroup.this, MainMenu.class));
-            }
-        });
+        int viewId = v.getId();
+
+        if(viewId == R.id.confirmGroupNamebtn) {
+            name = etgroupName.getText().toString();
+            groupId = generateId(10);
+
+            GroupAdapter groupAdapter = new GroupAdapter(groupId, name);
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference databaseReference1 = firebaseDatabase.getReference().child("Groups").child(groupId);
+            databaseReference1.setValue(groupAdapter);
+
+            AddMemberAdapter addMemberAdapter = new AddMemberAdapter(userName, userToken);
+            DatabaseReference databaseReference2 = firebaseDatabase.getReference().child("Groups").child(groupId).child("Members").child(androidId);
+            databaseReference2.setValue(addMemberAdapter);
+
+            Toast.makeText(getContext(), "Group Successfully created!", Toast.LENGTH_SHORT).show();
+
+            Fragment mainMenu = new MainMenu();
+            Bundle bundle = new Bundle();
+            bundle.putString("androidId", androidId);
+            bundle.putString("userName", userName);
+            bundle.putString("userToken", userToken);
+            mainMenu.setArguments(bundle);
+
+            fragmentManagement.setMainFragment(confirmGroupNamebtn, transaction, mainMenu, "Create Group");
+        }
     }
 
     public static String generateId(int sizeofid){
