@@ -3,6 +3,7 @@ package com.example.ontimeapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,16 +43,30 @@ public class MainMenu extends Fragment implements View.OnClickListener {
     private static final String TAG = "MainMenu";
     String androidId, userName, userToken;
     Button joinGroup, createGroup, setTasks;
+    TextView title;
     ArrayList<String> groupnames = new ArrayList<>();
     ArrayList<String> groupcodes = new ArrayList<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        title = getActivity().findViewById(R.id.title_activity);
+        title.setText("TEAMS");
+
         Bundle args = getArguments();
         androidId = args.getString("androidId");
         userName = args.getString("userName");
         userToken = args.getString("userToken");
+
+        getActivity().findViewById(R.id.global_titlebar).setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.title_activity).setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.ic_nav).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        title.setText("TEAMS");
     }
 
     public MainMenu() {
@@ -62,6 +77,10 @@ public class MainMenu extends Fragment implements View.OnClickListener {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_mainmenu, container, false);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManagement fragmentManagement = new FragmentManagement();
+        fragmentManagement.clearFragments(fragmentManager);
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
@@ -122,15 +141,15 @@ public class MainMenu extends Fragment implements View.OnClickListener {
         if (viewId == R.id.SetTasksBtn) {
             Fragment setTaskActivity = new SetTasksActivity();
             setTaskActivity.setArguments(bundle);
-            fragmentManagement.setMainFragment(setTasks, transaction, setTaskActivity, "Set Tasks");
+            fragmentManagement.setMainFragment(title, transaction, setTaskActivity, "SET TASKS");
         } else if (viewId == R.id.JoinGroupBtn) {
             Fragment joinGroup = new JoinGroup();
             joinGroup.setArguments(bundle);
-            fragmentManagement.setMainFragment(setTasks, transaction, joinGroup, "Join Group");
+            fragmentManagement.setMainFragment(title, transaction, joinGroup, "JOIN TEAM");
         } else if(viewId == R.id.CreateGroupBtn) {
             Fragment createGroup = new CreateGroup();
             createGroup.setArguments(bundle);
-            fragmentManagement.setMainFragment(setTasks, transaction, createGroup, "Create Group");
+            fragmentManagement.setMainFragment(title, transaction, createGroup, "CREATE TEAM");
         }
     }
 }

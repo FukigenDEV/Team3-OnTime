@@ -38,6 +38,14 @@ public class EntryScreen extends Fragment {
     private static final String TAG = "EntryScreen";
     private Context context;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        getActivity().findViewById(R.id.global_titlebar).setVisibility(View.INVISIBLE);
+        getActivity().findViewById(R.id.title_activity).setVisibility(View.INVISIBLE);
+        getActivity().findViewById(R.id.ic_nav).setVisibility(View.INVISIBLE);
+    }
+
     public EntryScreen() {
         // Required empty public constructor
     }
