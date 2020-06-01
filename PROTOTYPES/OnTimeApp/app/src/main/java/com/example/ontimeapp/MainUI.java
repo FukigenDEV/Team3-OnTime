@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.Constraints;
+import androidx.work.Data;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -46,6 +47,8 @@ public class MainUI extends FragmentActivity {
         navParent = findViewById(R.id.layout_sidenav);
         navLayoutList = Arrays.asList(global_nav, navParent);
         flGlobal = findViewById(R.id.global_framelayout);
+
+
 
         @SuppressLint("HardwareIds") final String androidId = Settings.Secure.getString(MainUI.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
