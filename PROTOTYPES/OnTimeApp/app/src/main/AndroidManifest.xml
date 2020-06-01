@@ -17,13 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SetTasksActivity" />
-        <activity android:name=".EntryScreen" />
-        <activity android:name=".MainMenu" />
-        <activity android:name=".CreateUser" />
-        <activity android:name=".JoinGroup" />
-        <activity android:name=".CreateGroup" />
-        <activity android:name=".SelectedGroup" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 //public class SelectedGroup extends AppCompatActivity {
@@ -38,6 +40,7 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "SelectedGroup";
     String groupName, groupCode;
+    Button addAlarm;
 
     @Override
     public void onAttach(@NonNull Context context){
@@ -60,11 +63,27 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
         setGroupName.setText(groupName);
         setGroupCode.setText(groupCode + " (others can use this code to join your group)");
 
+        addAlarm = rootView.findViewById(R.id.addAlarmBtn);
+        addAlarm.setOnClickListener(this);
+
+
         return rootView;
     }
 
     @Override
     public void onClick(View v) {
+        final FragmentManagement fragmentManagement = new FragmentManagement();
+        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
+        int viewId = v.getId();
+
+        if (viewId == R.id.addAlarmBtn){
+            Bundle bundle = new Bundle();
+            bundle.putString("groupName", groupName);
+            bundle.putString("groupCode", groupCode);
+            Fragment addNewAlarm = new CreateAlarm();
+            addNewAlarm.setArguments(bundle);
+            fragmentManagement.setMainFragment(addAlarm, transaction, addNewAlarm, "Add new Alarm");
+        }
     }
 }

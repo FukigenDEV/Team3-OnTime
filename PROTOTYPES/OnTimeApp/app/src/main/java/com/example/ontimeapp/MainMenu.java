@@ -59,8 +59,7 @@ public class MainMenu extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_mainmenu, container, false);
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
