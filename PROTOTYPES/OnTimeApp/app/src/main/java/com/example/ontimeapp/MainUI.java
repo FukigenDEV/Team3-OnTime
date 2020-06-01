@@ -3,6 +3,7 @@ package com.example.ontimeapp;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.Constraints;
 import androidx.work.PeriodicWorkRequest;
@@ -143,6 +144,35 @@ public class MainUI extends FragmentActivity {
         NavItem(String title_, int iconResource_) {
             title = title_;
             iconResource = iconResource_;
+        }
+    }
+
+    public void onBackPressed() {
+        int fragmentAmount = getSupportFragmentManager().getBackStackEntryCount();
+
+        FragmentManager.BackStackEntry fragmentPrev = getSupportFragmentManager().getBackStackEntryAt(fragmentAmount-2);
+        FragmentManager.BackStackEntry fragmentCurr = getSupportFragmentManager().getBackStackEntryAt(fragmentAmount-1);
+        String tag = fragmentPrev.getName();
+        String tag2 = fragmentCurr.getName();
+
+        Log.d("BackPress", ""+tag+" Fragments"+getSupportFragmentManager().getFragments());
+
+        if((!tag.equals("Home")) && (!tag.equals("Create User"))) {
+            final TextView activityTitle = findViewById(R.id.title_activity);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+            Fragment fragment2 = getSupportFragmentManager().findFragmentByTag(tag2);
+
+            this.getSupportFragmentManager().popBackStackImmediate();
+
+            transaction.remove(fragment2);
+            transaction.replace(R.id.global_framelayout, fragment, tag);
+            transaction.commit();
+
+            activityTitle.setText(tag);
+        } else {
+            finishAffinity();
         }
     }
 
