@@ -99,7 +99,7 @@ public class MainMenu extends Fragment implements View.OnClickListener {
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT);
+                        Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
