@@ -74,8 +74,7 @@ public class MainMenu extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_mainmenu, container, false);
 
         FragmentManager fragmentManager = getFragmentManager();
@@ -119,7 +118,7 @@ public class MainMenu extends Fragment implements View.OnClickListener {
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT);
+                        Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
                     }
                 });
 

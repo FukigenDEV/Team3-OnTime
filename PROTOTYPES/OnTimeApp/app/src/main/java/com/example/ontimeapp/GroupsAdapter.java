@@ -1,13 +1,18 @@
 package com.example.ontimeapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -42,16 +47,24 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GroupsAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final GroupsAdapter.MyViewHolder holder, final int position) {
         holder.groupName.setText(Name.get(position));
         holder.groupCode.setText(Code.get(position));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent selectedgroup = new Intent(v.getContext(), SelectedGroup.class);
-                selectedgroup.putExtra("groupName", Name.get(position));
-                selectedgroup.putExtra("groupCode", Code.get(position));
-                context.startActivity(selectedgroup);
+                Bundle bundle = new Bundle();
+                bundle.putString("groupName", Name.get(position));
+                bundle.putString("groupCode", Code.get(position));
+
+                FragmentManagement fragmentManagement = new FragmentManagement();
+                FragmentTransaction transaction = ((MainUI)context).getSupportFragmentManager().beginTransaction();
+
+                Fragment selectedGroup = new SelectedGroup();
+                selectedGroup.setArguments(bundle);
+
+                fragmentManagement.setMainFragment(holder.groupName, transaction, selectedGroup, Name.get(position));
+
             }
         });
     }
@@ -61,3 +74,4 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.MyViewHold
         return Name.size();
     }
 }
+
