@@ -14,14 +14,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp"
-        android:background="#999999">
+        android:background="@color/colorGlobal3">
 
         <TextView
             android:id="@+id/groupname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
-            android:textColor="#000000"
+            android:fontFamily="@font/opensans_bold"
+            android:textColor="@color/colorGlobal4"
             android:textStyle="bold"
             android:textSize="20sp" />
 
@@ -30,7 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
-            android:textColor="#000000"
+            android:fontFamily="@font/opensans_regular"
+            android:textColor="@color/colorGlobal4"
             android:textSize="15sp" />
 
 

@@ -50,8 +50,6 @@ public class MainUI extends FragmentActivity {
         navLayoutList = Arrays.asList(global_nav, navParent);
         flGlobal = findViewById(R.id.global_framelayout);
 
-
-
         @SuppressLint("HardwareIds") final String androidId = Settings.Secure.getString(MainUI.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
@@ -63,11 +61,8 @@ public class MainUI extends FragmentActivity {
 
         layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        navItemArray = new NavItem[4];
-        navItemArray[0] = new NavItem("Home", R.drawable.ic_iconmonstr_home_6);
-        navItemArray[1] = new NavItem("Profile", R.drawable.ic_iconmonstr_user_1);
-        navItemArray[2] = new NavItem("Team", R.drawable.ic_iconmonstr_user_29);
-        navItemArray[3] = new NavItem("Settings", R.drawable.ic_iconmonstr_gear_11);
+        navItemArray = new NavItem[1];
+        navItemArray[0] = new NavItem("Teams", R.drawable.ic_iconmonstr_user_29);
 
         int pos = 0;
         for (NavItem Item : navItemArray) {
@@ -86,14 +81,16 @@ public class MainUI extends FragmentActivity {
                     String title = navItemArray[index].title;
 
                     switch(navItemArray[index].title) {
-                        case "Home":
+                        case "Teams":
                             uiAnimation.hideMainNav(MainUI.this, navLayoutList);
-                            fragmentManagement.setMainFragment(activityTitle, transaction, new HomeFragment(), title);
+                            Fragment fragment = getSupportFragmentManager().findFragmentByTag("Main Menu");
+                            transaction.replace(R.id.global_framelayout, fragment, "Main Menu");
+                            transaction.commit();
                             break;
-                        case "Profile":
-                            uiAnimation.hideMainNav(MainUI.this, navLayoutList);
-                            fragmentManagement.setMainFragment(activityTitle, transaction, new ProfileFragment(), title);
-                            break;
+//                        case "Profile":
+//                            uiAnimation.hideMainNav(MainUI.this, navLayoutList);
+//                            fragmentManagement.setMainFragment(activityTitle, transaction, new ProfileFragment(), title);
+//                            break;
                     }
                 }
             });

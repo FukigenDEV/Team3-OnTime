@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="141dp"
+        android:layout_width="wrap_content"
         android:layout_height="41dp"
         android:layout_marginStart="135dp"
         android:layout_marginLeft="135dp"
@@ -18,7 +18,8 @@
         android:layout_marginBottom="118dp"
         android:text="On Time"
         android:textSize="36sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/opensans_bold"
+        android:textColor="@color/colorGlobal4"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +36,8 @@
         android:layout_marginRight="162dp"
         android:layout_marginBottom="144dp"
         android:text="Confirm Name"
+        android:fontFamily="@font/opensans_regular"
+        android:textColor="@color/colorGlobal1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -49,13 +52,15 @@
         android:layout_marginEnd="112dp"
         android:layout_marginRight="112dp"
         android:text="Welcome to the On Time app!"
+        android:fontFamily="@font/opensans_regular"
+        android:textColor="@color/colorGlobal4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
         android:layout_marginLeft="22dp"
@@ -63,9 +68,12 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="Please set a name that you would like to use within the app"
+        android:fontFamily="@font/opensans_regular"
+        android:textColor="@color/colorGlobal4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/etName"
@@ -80,6 +88,8 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
+        android:fontFamily="@font/opensans_regular"
+        android:textColor="@color/colorGlobal4"
         app:layout_constraintBottom_toTopOf="@+id/confirmName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,6 +102,9 @@
         android:ems="10"
         android:hint="@android:string/emptyPhoneNumber"
         android:inputType="phone"
+        android:textColorHint="@color/colorGlobal4"
+        android:fontFamily="@font/opensans_regular"
+        android:textColor="@color/colorGlobal4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
