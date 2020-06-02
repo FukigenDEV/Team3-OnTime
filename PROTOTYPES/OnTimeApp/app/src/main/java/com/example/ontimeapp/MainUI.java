@@ -148,8 +148,10 @@ public class MainUI extends FragmentActivity {
     }
 
     public void onBackPressed() {
-        int fragmentAmount = getSupportFragmentManager().getBackStackEntryCount();
+        FragmentManagement fragmentManagement = new FragmentManagement();
+        fragmentManagement.logFragments(getSupportFragmentManager());
 
+        int fragmentAmount = getSupportFragmentManager().getBackStackEntryCount();
         FragmentManager.BackStackEntry fragmentPrev = getSupportFragmentManager().getBackStackEntryAt(fragmentAmount-2);
         FragmentManager.BackStackEntry fragmentCurr = getSupportFragmentManager().getBackStackEntryAt(fragmentAmount-1);
         String tag = fragmentPrev.getName();
@@ -159,13 +161,13 @@ public class MainUI extends FragmentActivity {
 
         if((!tag.equals("Home")) && (!tag.equals("Create User"))) {
             final TextView activityTitle = findViewById(R.id.title_activity);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
             Fragment fragment2 = getSupportFragmentManager().findFragmentByTag(tag2);
 
             this.getSupportFragmentManager().popBackStackImmediate();
 
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.remove(fragment2);
             transaction.replace(R.id.global_framelayout, fragment, tag);
             transaction.commit();

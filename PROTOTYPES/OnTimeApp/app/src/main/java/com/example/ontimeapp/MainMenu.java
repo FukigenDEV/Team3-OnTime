@@ -80,7 +80,7 @@ public class MainMenu extends Fragment implements View.OnClickListener {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentManagement fragmentManagement = new FragmentManagement();
-        fragmentManagement.clearFragments(fragmentManager);
+//        fragmentManagement.clearFragments(fragmentManager);
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);

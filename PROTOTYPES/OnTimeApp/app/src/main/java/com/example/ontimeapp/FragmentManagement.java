@@ -12,21 +12,28 @@ import androidx.fragment.app.FragmentTransaction;
 
 class FragmentManagement {
 
-        void setMainFragment(TextView activityTitle, FragmentTransaction transaction, Fragment fragment, String title) {
-            transaction.replace(R.id.global_framelayout, fragment, title);
-            transaction.addToBackStack(title);
-            transaction.commit();
+    void setMainFragment(TextView activityTitle, FragmentTransaction transaction, Fragment fragment, String title) {
+        transaction.replace(R.id.global_framelayout, fragment, title);
+        transaction.addToBackStack(title);
+        transaction.commit();
 
-            Log.d("TAG", title);
-            activityTitle.setText(title);
-        }
+        Log.d("TAG", title);
+        activityTitle.setText(title);
+    }
 
-        void clearFragments(FragmentManager fragmentManager) {
-            final FragmentManager fm = fragmentManager;
-            Fragment fragment = fm.findFragmentByTag("Home");
-            if(fragment != null)
-                fm.beginTransaction().remove(fragment).commit();
+//    void clearFragments(FragmentManager fragmentManager) {
+//        final FragmentManager fm = fragmentManager;
+//        Fragment fragment = fm.findFragmentByTag("Home");
+//        if(fragment != null)
+//            fm.beginTransaction().remove(fragment).commit();
 //            Log.d("FM", ""+fm.getBackStackEntryAt(i).getName());
+//    }
+
+    void logFragments(FragmentManager fragmentManager) {
+        final FragmentManager fm = fragmentManager;
+        for (int i = fragmentManager.getBackStackEntryCount() - 1; i >= 0; i--) {
+            Log.d("Fragments", "" + fragmentManager.getBackStackEntryAt(i).getName());
         }
+    }
 
 }
