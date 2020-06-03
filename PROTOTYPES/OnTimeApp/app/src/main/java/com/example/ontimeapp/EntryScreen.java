@@ -44,6 +44,7 @@ public class EntryScreen extends Fragment {
         getActivity().findViewById(R.id.global_titlebar).setVisibility(View.INVISIBLE);
         getActivity().findViewById(R.id.title_activity).setVisibility(View.INVISIBLE);
         getActivity().findViewById(R.id.ic_nav).setVisibility(View.INVISIBLE);
+        getActivity().findViewById(R.id.subNav).setVisibility(View.INVISIBLE);
     }
 
     public EntryScreen() {

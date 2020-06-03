@@ -38,11 +38,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainMenu extends Fragment implements View.OnClickListener {
+public class MainMenu extends Fragment {
 
     private static final String TAG = "MainMenu";
     String androidId, userName, userToken;
-    Button joinGroup, createGroup, setTasks;
     TextView title;
     ArrayList<String> groupnames = new ArrayList<>();
     ArrayList<String> groupcodes = new ArrayList<>();
@@ -61,6 +60,7 @@ public class MainMenu extends Fragment implements View.OnClickListener {
         getActivity().findViewById(R.id.global_titlebar).setVisibility(View.VISIBLE);
         getActivity().findViewById(R.id.title_activity).setVisibility(View.VISIBLE);
         getActivity().findViewById(R.id.ic_nav).setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.subNav).setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -81,14 +81,6 @@ public class MainMenu extends Fragment implements View.OnClickListener {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        joinGroup = rootView.findViewById(R.id.JoinGroupBtn);
-        createGroup = rootView.findViewById(R.id.CreateGroupBtn);
-        setTasks = rootView.findViewById(R.id.SetTasksBtn);
-
-        setTasks.setOnClickListener(this);
-        createGroup.setOnClickListener(this);
-        joinGroup.setOnClickListener(this);
 
         FirebaseDatabase.getInstance().getReference().child("Groups")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -119,29 +111,4 @@ public class MainMenu extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    public void onClick(View v) {
-        final FragmentManagement fragmentManagement = new FragmentManagement();
-        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-        int viewId = v.getId();
-
-        Bundle bundle = new Bundle();
-        bundle.putString("androidId", androidId);
-        bundle.putString("userName", userName);
-        bundle.putString("userToken", userToken);
-
-        if (viewId == R.id.SetTasksBtn) {
-            Fragment setTaskActivity = new SetTasksActivity();
-            setTaskActivity.setArguments(bundle);
-            fragmentManagement.replaceMainFragment(title, transaction, setTaskActivity, "SET TASKS");
-        } else if (viewId == R.id.JoinGroupBtn) {
-            Fragment joinGroup = new JoinGroup();
-            joinGroup.setArguments(bundle);
-            fragmentManagement.replaceMainFragment(title, transaction, joinGroup, "JOIN TEAM");
-        } else if(viewId == R.id.CreateGroupBtn) {
-            Fragment createGroup = new CreateGroup();
-            createGroup.setArguments(bundle);
-            fragmentManagement.replaceMainFragment(title, transaction, createGroup, "CREATE TEAM");
-        }
-    }
 }

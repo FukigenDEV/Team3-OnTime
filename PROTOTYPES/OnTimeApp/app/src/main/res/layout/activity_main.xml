@@ -53,6 +53,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
+    <fragment android:name="com.example.ontimeapp.Subnav"
+        android:id="@+id/subNav"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
     <LinearLayout
         android:id="@+id/global_nav"
         android:layout_width="260dp"
