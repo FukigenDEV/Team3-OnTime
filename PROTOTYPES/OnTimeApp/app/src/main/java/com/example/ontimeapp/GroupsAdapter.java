@@ -63,7 +63,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.MyViewHold
                 Fragment selectedGroup = new SelectedGroup();
                 selectedGroup.setArguments(bundle);
 
-                fragmentManagement.setMainFragment(holder.groupName, transaction, selectedGroup, Name.get(position));
+                fragmentManagement.replaceMainFragment(holder.groupName, transaction, selectedGroup, Name.get(position));
 
             }
         });

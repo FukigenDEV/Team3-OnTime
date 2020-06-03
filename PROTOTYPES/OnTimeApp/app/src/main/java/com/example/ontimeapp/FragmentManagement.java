@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 class FragmentManagement {
 
+    // Replaces current fragment with the fragment in parameters and adds it to the back stack
     void setMainFragment(TextView activityTitle, FragmentTransaction transaction, Fragment fragment, String title) {
         transaction.replace(R.id.global_framelayout, fragment, title);
         transaction.addToBackStack(title);
@@ -21,6 +22,16 @@ class FragmentManagement {
         activityTitle.setText(title);
     }
 
+    // Replaces current fragment with fragment in parameters without adding to back stack
+    void replaceMainFragment(TextView activityTitle, FragmentTransaction transaction, Fragment fragment, String title) {
+        transaction.replace(R.id.global_framelayout, fragment, title);
+        transaction.commit();
+
+        Log.d("TAG", title);
+        activityTitle.setText(title);
+    }
+
+    // Logs fragments currently in the back stack
     void logFragments(FragmentManager fragmentManager) {
         final FragmentManager fm = fragmentManager;
         for (int i = fragmentManager.getBackStackEntryCount() - 1; i >= 0; i--) {

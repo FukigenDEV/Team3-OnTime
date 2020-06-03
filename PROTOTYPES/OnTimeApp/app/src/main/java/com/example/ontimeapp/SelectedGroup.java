@@ -113,7 +113,7 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
             bundle.putString("groupCode", groupCode);
             Fragment addNewAlarm = new CreateAlarm();
             addNewAlarm.setArguments(bundle);
-            fragmentManagement.setMainFragment(addAlarm, transaction, addNewAlarm, "Add new Alarm");
+            fragmentManagement.replaceMainFragment(addAlarm, transaction, addNewAlarm, "Add new Alarm");
         }
     }
 }

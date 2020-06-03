@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+
+import org.w3c.dom.Text;
 
 public class SetTasksActivity extends Fragment implements View.OnClickListener {
 
@@ -86,13 +89,14 @@ public class SetTasksActivity extends Fragment implements View.OnClickListener {
                                 //databaseReference.setValue(user);
                                 Toast.makeText(getContext(), "Database Updated", Toast.LENGTH_SHORT).show();
 
-                                Fragment mainMenu = new MainMenu();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("androidId", androidId);
-                                bundle.putString("userName", userName);
-                                bundle.putString("userToken", userToken);
-                                mainMenu.setArguments(bundle);
-                                fragmentManagement.setMainFragment(confirm, transaction, mainMenu, "Set Task");
+//                                Fragment mainMenu = new MainMenu();
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("androidId", androidId);
+//                                bundle.putString("userName", userName);
+//                                bundle.putString("userToken", userToken);
+//                                mainMenu.setArguments(bundle);
+
+                                fragmentManagement.replaceMainFragment((TextView)getActivity().findViewById(R.id.title_activity), transaction, getFragmentManager().findFragmentByTag("TEAMS"), "TEAMS");
                             }
                         });
             }

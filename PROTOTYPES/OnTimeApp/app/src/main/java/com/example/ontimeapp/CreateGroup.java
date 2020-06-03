@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -80,14 +81,14 @@ public class CreateGroup extends Fragment implements View.OnClickListener {
 
             Toast.makeText(getContext(), "Group Successfully created!", Toast.LENGTH_SHORT).show();
 
-            Fragment mainMenu = new MainMenu();
-            Bundle bundle = new Bundle();
-            bundle.putString("androidId", androidId);
-            bundle.putString("userName", userName);
-            bundle.putString("userToken", userToken);
-            mainMenu.setArguments(bundle);
+//            Fragment mainMenu = new MainMenu();
+//            Bundle bundle = new Bundle();
+//            bundle.putString("androidId", androidId);
+//            bundle.putString("userName", userName);
+//            bundle.putString("userToken", userToken);
+//            mainMenu.setArguments(bundle);
 
-            fragmentManagement.setMainFragment(confirmGroupNamebtn, transaction, mainMenu, "Create Group");
+            fragmentManagement.replaceMainFragment((TextView)getActivity().findViewById(R.id.title_activity), transaction, getFragmentManager().findFragmentByTag("TEAMS"), "TEAMS");
         }
     }
 

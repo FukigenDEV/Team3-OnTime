@@ -1,6 +1,7 @@
 package com.example.ontimeapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -22,11 +23,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MainUI extends FragmentActivity {
+public class MainUI extends AppCompatActivity {
 
     private Context context;
 
@@ -57,7 +60,7 @@ public class MainUI extends FragmentActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         FragmentManagement fragmentManagement = new FragmentManagement();
-        fragmentManagement.setMainFragment(activityTitle, transaction, new EntryScreen(), "Home");
+        fragmentManagement.replaceMainFragment(activityTitle, transaction, new EntryScreen(), "ENTRYSCREEN");
 
         layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
@@ -83,9 +86,8 @@ public class MainUI extends FragmentActivity {
                     switch(navItemArray[index].title) {
                         case "Teams":
                             uiAnimation.hideMainNav(MainUI.this, navLayoutList);
-                            Fragment fragment = getSupportFragmentManager().findFragmentByTag("Main Menu");
-                            transaction.replace(R.id.global_framelayout, fragment, "Main Menu");
-                            transaction.commit();
+                            Fragment fragment = getSupportFragmentManager().findFragmentByTag("TEAMS");
+                            fragmentManagement.replaceMainFragment((TextView)findViewById(R.id.title_activity), transaction, fragment, "TEAMS");
                             break;
 //                        case "Profile":
 //                            uiAnimation.hideMainNav(MainUI.this, navLayoutList);
@@ -147,35 +149,49 @@ public class MainUI extends FragmentActivity {
         }
     }
 
+//    public void onBackPressed() {
+//        FragmentManagement fragmentManagement = new FragmentManagement();
+//        fragmentManagement.logFragments(getSupportFragmentManager());
+//
+//        int fragmentAmount = getSupportFragmentManager().getBackStackEntryCount();
+//        FragmentManager.BackStackEntry fragmentPrev = getSupportFragmentManager().getBackStackEntryAt(fragmentAmount-2);
+//        FragmentManager.BackStackEntry fragmentCurr = getSupportFragmentManager().getBackStackEntryAt(fragmentAmount-1);
+//        String tag = fragmentPrev.getName();
+//        String tag2 = fragmentCurr.getName();
+//
+//        Log.d("BackPress", ""+tag+" Fragments"+getSupportFragmentManager().getFragments());
+//
+//        if((!tag.equals("Home")) && (!tag.equals("Create User"))) {
+//            final TextView activityTitle = findViewById(R.id.title_activity);
+//
+//            Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+//            Fragment fragment2 = getSupportFragmentManager().findFragmentByTag(tag2);
+//
+//            this.getSupportFragmentManager().popBackStackImmediate();
+//
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.remove(fragment2);
+//            transaction.replace(R.id.global_framelayout, fragment, tag);
+//            transaction.commit();
+//
+//            activityTitle.setText(tag);
+//        } else {
+//            finishAffinity();
+//        }
+//    }
+
+
+    @Override
     public void onBackPressed() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         FragmentManagement fragmentManagement = new FragmentManagement();
         fragmentManagement.logFragments(getSupportFragmentManager());
 
-        int fragmentAmount = getSupportFragmentManager().getBackStackEntryCount();
-        FragmentManager.BackStackEntry fragmentPrev = getSupportFragmentManager().getBackStackEntryAt(fragmentAmount-2);
-        FragmentManager.BackStackEntry fragmentCurr = getSupportFragmentManager().getBackStackEntryAt(fragmentAmount-1);
-        String tag = fragmentPrev.getName();
-        String tag2 = fragmentCurr.getName();
-
-        Log.d("BackPress", ""+tag+" Fragments"+getSupportFragmentManager().getFragments());
-
-        if((!tag.equals("Home")) && (!tag.equals("Create User"))) {
-            final TextView activityTitle = findViewById(R.id.title_activity);
-
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-            Fragment fragment2 = getSupportFragmentManager().findFragmentByTag(tag2);
-
-            this.getSupportFragmentManager().popBackStackImmediate();
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.remove(fragment2);
-            transaction.replace(R.id.global_framelayout, fragment, tag);
-            transaction.commit();
-
-            activityTitle.setText(tag);
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.global_framelayout);
+        if(!(f instanceof MainMenu)) {
+            fragmentManagement.replaceMainFragment((TextView) findViewById(R.id.title_activity), transaction, getSupportFragmentManager().findFragmentByTag("TEAMS"), "TEAMS");
         } else {
             finishAffinity();
         }
     }
-
 }

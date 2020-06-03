@@ -77,10 +77,6 @@ public class MainMenu extends Fragment implements View.OnClickListener {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_mainmenu, container, false);
 
-//        FragmentManager fragmentManager = getFragmentManager();
-//        FragmentManagement fragmentManagement = new FragmentManagement();
-//        fragmentManagement.clearFragments(fragmentManager);
-
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -140,15 +136,15 @@ public class MainMenu extends Fragment implements View.OnClickListener {
         if (viewId == R.id.SetTasksBtn) {
             Fragment setTaskActivity = new SetTasksActivity();
             setTaskActivity.setArguments(bundle);
-            fragmentManagement.setMainFragment(title, transaction, setTaskActivity, "SET TASKS");
+            fragmentManagement.replaceMainFragment(title, transaction, setTaskActivity, "SET TASKS");
         } else if (viewId == R.id.JoinGroupBtn) {
             Fragment joinGroup = new JoinGroup();
             joinGroup.setArguments(bundle);
-            fragmentManagement.setMainFragment(title, transaction, joinGroup, "JOIN TEAM");
+            fragmentManagement.replaceMainFragment(title, transaction, joinGroup, "JOIN TEAM");
         } else if(viewId == R.id.CreateGroupBtn) {
             Fragment createGroup = new CreateGroup();
             createGroup.setArguments(bundle);
-            fragmentManagement.setMainFragment(title, transaction, createGroup, "CREATE TEAM");
+            fragmentManagement.replaceMainFragment(title, transaction, createGroup, "CREATE TEAM");
         }
     }
 }

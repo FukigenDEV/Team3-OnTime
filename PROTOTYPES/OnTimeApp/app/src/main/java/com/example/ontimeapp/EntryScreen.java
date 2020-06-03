@@ -65,9 +65,7 @@ public class EntryScreen extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 FragmentManagement fragmentManagement = new FragmentManagement();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-                View mainUI = inflater.inflate(R.layout.activity_main, null, false);
-                TextView activityTitle = mainUI.findViewById(R.id.title_activity);
+                TextView activityTitle = getActivity().findViewById(R.id.title_activity);
 
                 if (dataSnapshot.child(androidId).exists()){
                     Toast.makeText(getActivity(), "Android ID exists in database", Toast.LENGTH_SHORT).show();
@@ -83,7 +81,7 @@ public class EntryScreen extends Fragment {
                     bundle.putString("userToken", userToken);
                     mainMenu.setArguments(bundle);
 
-                    fragmentManagement.setMainFragment(activityTitle, transaction, mainMenu, "Main Menu");
+                    fragmentManagement.setMainFragment(activityTitle, transaction, mainMenu, "TEAMS");
                 }else{
                     Toast.makeText(getActivity(), androidId + "Android ID does not exist in database", Toast.LENGTH_SHORT).show();
 
@@ -94,7 +92,7 @@ public class EntryScreen extends Fragment {
 
                     Log.d(TAG, "androidId: "+androidId);
 
-                    fragmentManagement.setMainFragment(activityTitle, transaction, createUser, "Create User");
+                    fragmentManagement.replaceMainFragment(activityTitle, transaction, createUser, "CREATE USER");
                 }
             }
 
