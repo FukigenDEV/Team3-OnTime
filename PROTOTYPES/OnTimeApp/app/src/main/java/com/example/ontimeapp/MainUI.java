@@ -255,7 +255,7 @@ public class MainUI extends AppCompatActivity {
         fragmentManagement.logFragments(getSupportFragmentManager());
 
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.global_framelayout);
-        if(!(f instanceof MainMenu)) {
+        if(!(f instanceof MainMenu) && !(f instanceof CreateUser)) {
             fragmentManagement.replaceMainFragment((TextView) findViewById(R.id.title_activity), transaction, getSupportFragmentManager().findFragmentByTag("TEAMS"), "TEAMS");
         } else {
             finishAffinity();
