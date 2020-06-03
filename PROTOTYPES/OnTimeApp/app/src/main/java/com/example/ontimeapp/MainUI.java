@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.Constraints;
 import androidx.work.Data;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -131,11 +132,12 @@ public class MainUI extends FragmentActivity {
                 .build();
 
         PeriodicWorkRequest syncAlarmRequest =
-                new PeriodicWorkRequest.Builder(AlarmSyncWorker.class, 15, TimeUnit.MINUTES)
+                new PeriodicWorkRequest
+                        .Builder(AlarmSyncWorker.class, 15, TimeUnit.MINUTES)
                         .setConstraints(constraints)
                         .build();
 
-        WorkManager.getInstance(context).enqueue(syncAlarmRequest);
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork("alarmSync", ExistingPeriodicWorkPolicy.REPLACE, syncAlarmRequest);
     }
 
     public static class NavItem {

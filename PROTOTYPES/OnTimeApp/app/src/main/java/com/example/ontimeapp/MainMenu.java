@@ -71,8 +71,6 @@ public class MainMenu extends Fragment implements View.OnClickListener {
         createGroup = rootView.findViewById(R.id.CreateGroupBtn);
         setTasks = rootView.findViewById(R.id.SetTasksBtn);
 
-        Log.d("MESSAGECHECKMAINMENU", androidId + userName + userToken);
-
         setTasks.setOnClickListener(this);
         createGroup.setOnClickListener(this);
         joinGroup.setOnClickListener(this);
@@ -87,7 +85,6 @@ public class MainMenu extends Fragment implements View.OnClickListener {
                             if (snapshot.child("Members").hasChild(androidId)){
                                 String groupid = snapshot.getKey();
                                 String groupname = snapshot.child("groupName").getValue().toString();
-                                System.out.println(groupid);
                                 groupcodes.add(groupid);
                                 groupnames.add(groupname);
                             }

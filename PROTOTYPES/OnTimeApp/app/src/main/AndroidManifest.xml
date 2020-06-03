@@ -18,6 +18,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".AlarmActive"></activity>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/notification_channel_id" />
@@ -29,6 +31,12 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".AlarmReceiver" android:process=":remote">
+            <intent-filter>
+                <data android:scheme="timer:" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
