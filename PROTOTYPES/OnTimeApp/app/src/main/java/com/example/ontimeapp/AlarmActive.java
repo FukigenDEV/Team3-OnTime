@@ -26,10 +26,9 @@ public class AlarmActive extends AppCompatActivity {
         dismissAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManagement fragmentManagement = new FragmentManagement();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                Fragment entryScreen = new EntryScreen();
-                fragmentManagement.setMainFragment(dismissAlarm, fragmentTransaction, entryScreen, "Main Menu");
+                Intent intent = new Intent(getApplicationContext(), MainUI.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
