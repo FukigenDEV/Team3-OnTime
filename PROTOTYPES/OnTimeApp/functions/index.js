@@ -102,5 +102,12 @@ exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Memb
         });
     });
 
+// TEST FUNCTION that runs every five minutes
+exports.scheduledFunction = functions.pubsub.schedule('every 5 minutes')
+    .onRun((context) => {
+        console.log('This will be run every 5 minutes!');
+        console.log(Date.now());
+    });
+
 
 
