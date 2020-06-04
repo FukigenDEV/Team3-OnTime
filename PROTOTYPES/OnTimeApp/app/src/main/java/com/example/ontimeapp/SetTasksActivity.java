@@ -51,7 +51,7 @@ public class SetTasksActivity extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_set_tasks, container, false);
 
-        task = rootView.findViewById(R.id.etName);
+        task = rootView.findViewById(R.id.setTask);
         confirm = rootView.findViewById(R.id.confirmbtn);
 
         confirm.setOnClickListener(this);
