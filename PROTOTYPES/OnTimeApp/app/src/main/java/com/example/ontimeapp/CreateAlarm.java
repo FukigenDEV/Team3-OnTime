@@ -21,6 +21,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,6 +32,9 @@ public class CreateAlarm extends Fragment implements View.OnClickListener {
     EditText alarmName, alarmDate, alarmTime;
     private int pickedYear, pickedMonth, pickedDay, pickedHour, pickedMinute;
     String alarmNamestring, alarmDatestring, alarmTimestring, groupCode, groupName;
+    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    private Date alarmDateFull;
+    private long AlarmMilis;
 
     @Override
     public void onAttach(@NonNull Context context){
@@ -106,20 +111,28 @@ public class CreateAlarm extends Fragment implements View.OnClickListener {
                 Toast.makeText(getContext(), "Please fill in all of the fields", Toast.LENGTH_SHORT).show();
             }
             else{
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference().child("Groups").child(groupCode).child("Alarms").child(alarmNamestring);
-                Alarm alarm = new Alarm(alarmNamestring, alarmDatestring, alarmTimestring);
-                databaseReference.setValue(alarm);
-                Toast.makeText(getContext(), "Alarm successfully added!", Toast.LENGTH_SHORT).show();
+                try {
+                    alarmDateFull = format.parse(alarmDatestring + " " + alarmTimestring);
+                    AlarmMilis = alarmDateFull.getTime();
 
-                Bundle bundle = new Bundle();
-                bundle.putString("groupName", groupName);
-                bundle.putString("groupCode", groupCode);
+                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                    DatabaseReference databaseReference = firebaseDatabase.getReference().child("Groups").child(groupCode).child("Alarms").child(alarmNamestring);
+                    Alarm alarm = new Alarm(alarmNamestring, alarmDatestring, alarmTimestring, AlarmMilis);
+                    databaseReference.setValue(alarm);
+                    Toast.makeText(getContext(), "Alarm successfully added!", Toast.LENGTH_SHORT).show();
 
-                Fragment selectedGroup = new SelectedGroup();
-                selectedGroup.setArguments(bundle);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("groupName", groupName);
+                    bundle.putString("groupCode", groupCode);
 
-                fragmentManagement.replaceMainFragment((TextView)getActivity().findViewById(R.id.title_activity), transaction, selectedGroup, groupCode);
+                    Fragment selectedGroup = new SelectedGroup();
+                    selectedGroup.setArguments(bundle);
+
+                    fragmentManagement.replaceMainFragment((TextView)getActivity().findViewById(R.id.title_activity), transaction, selectedGroup, groupCode);
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

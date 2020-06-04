@@ -2,6 +2,13 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
+// TEST FUNCTION that runs every five minutes
+// exports.scheduledFunction = functions.pubsub.schedule('every 5 minutes')
+//     .onRun((context) => {
+//         console.log('This will be run every 5 minutes!');
+//         return console.log(Date.now());
+//     });
+// END OF TEST FUNCTION
 
 // SEND NOTIFICATION WHEN DEVICE TOKEN ADDED TO DB
 // Listens for new tokens added to /Users/{AndroidID}/deviceToken and sends
@@ -67,12 +74,31 @@ exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Memb
         });
     });
 
-// TEST FUNCTION that runs every five minutes
-exports.scheduledFunction = functions.pubsub.schedule('every 5 minutes')
-    .onRun((context) => {
-        console.log('This will be run every 5 minutes!');
-        return console.log(Date.now());
+exports.SFDeleteAlarms = functions.pubsub.schedule('every 5 minutes')
+  .onRun((context) => {
+    const currentTime = Date.now();
+
+    var ref = admin.database().ref(`/Groups`);
+    ref.once("value", function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        if(childSnapshot.hasChild("Alarms")){
+          const groupID = childSnapshot.child("groupId").val();
+          childSnapshot.forEach(function(childSnapshot2){
+            if(childSnapshot2.key === "Alarms"){
+              childSnapshot2.forEach(function(alarmsSnapshot){
+                const alarmName = alarmsSnapshot.child("name").val();
+                const alarmMillis = alarmsSnapshot.child("milis").val();
+                if (alarmMillis < currentTime){
+                  console.log("ALARM", alarmName, "DELETED FROM GROUP", groupID);
+                  var deletedalarm = admin.database().ref(`/Groups/${groupID}/Alarms/${alarmName}`);
+                  deletedalarm.remove();
+                }
+              });
+            }
+          });
+        }
+      });
+    }, function (errorObject){
+        return console.log("The read failed: " + errorObject.code);
     });
-
-
-
+  });
