@@ -2,14 +2,6 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-// TEST FUNCTION that runs every five minutes
-// exports.scheduledFunction = functions.pubsub.schedule('every 5 minutes')
-//     .onRun((context) => {
-//         console.log('This will be run every 5 minutes!');
-//         return console.log(Date.now());
-//     });
-// END OF TEST FUNCTION
-
 // SEND NOTIFICATION WHEN DEVICE TOKEN ADDED TO DB
 // Listens for new tokens added to /Users/{AndroidID}/deviceToken and sends
 // notification the device of the new token
@@ -18,7 +10,7 @@ exports.newUserNotification = functions.database.ref('/Users/{AndroidID}/deviceT
         const AndroidID = context.params.AndroidID;
 
         var ref = admin.database().ref(`/Users/${AndroidID}/deviceToken`);
-        return ref.once("value", function(snapshot){
+        ref.once("value", function(snapshot){
         const deviceToken = snapshot.val();
             const payload = {
                 data: {
@@ -50,7 +42,7 @@ exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Memb
         const AndroidID = context.params.AndroidID;
 
         var ref = admin.database().ref(`/Groups/${GroupID}/Members`);
-        return ref.once("value", function(snapshot){
+        ref.once("value", function(snapshot){
             snapshot.forEach(function(childSnapshot){
                 const deviceToken = childSnapshot.child("deviceToken").val();
                 const payload = {
@@ -74,6 +66,36 @@ exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Memb
         });
     });
 
+// MONITOR NEW ALARMS
+// This function listens for new tokens added to the Alarms child of the Groups node
+// When a new alarm is added, all of the members of the group get assigned to the alarm
+// The state of the members is then changed to 'Not awake'.
+exports.SetAlarmUserState = functions.database.ref('/Groups/{GroupID}/Alarms/{AlarmName}')
+  .onWrite((change, context) => {
+    if(change.before.exists()){
+      return null;
+    }
+    if(!change.after.exists()){
+      return null;
+    }
+    const GroupID = context.params.GroupID;
+    const AlarmName = context.params.AlarmName;
+
+    var ref = admin.database().ref(`/Groups/${GroupID}/Members`);
+    ref.once("value", function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        const deviceToken = childSnapshot.key;
+        admin.database().ref(`/Groups/${GroupID}/Alarms/${AlarmName}/MemberState`).child(deviceToken).set("NOTAWAKE");
+      });
+    }, function (errorObject){
+        console.log("The read failed: " + errorObject.code);
+    });
+  });
+
+// DELETE PASSED ALARMS
+// This function automatically runs every 5 minutes and checks the database (Groups node)
+// Every alarm in the database gets comparet to the current time
+// If the alarm time is behind the current time, the alarm gets deleted
 exports.SFDeleteAlarms = functions.pubsub.schedule('every 5 minutes')
   .onRun((context) => {
     const currentTime = Date.now();
