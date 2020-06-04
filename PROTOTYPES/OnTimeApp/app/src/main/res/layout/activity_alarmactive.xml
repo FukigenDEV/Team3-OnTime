@@ -17,7 +17,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/wakeuptext"
 
-        android:src="@drawable/logoontimetransparant1"
+        android:src="@drawable/LogoOnTimeTransparant1"
         />
 
     <TextView
