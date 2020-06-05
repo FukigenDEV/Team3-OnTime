@@ -55,7 +55,7 @@ exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Memb
         snapshot.forEach(function(childSnapshot){
           const deviceToken = childSnapshot.child("deviceToken").val();
           const deviceId = childSnapshot.key;
-          if(AndroidID !== deviceToken){
+          if(AndroidID !== deviceId){
             const payload = {
               data: {
                 title:  'On Time - New addition to the team!',
@@ -71,7 +71,9 @@ exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Memb
               return console.log("Error sending message:", error, deviceToken);
               });
           }
-          console.log("Message not sent to new user: ", deviceToken);
+          if(AndroidID === deviceId){
+            console.log("Message not sent to new user: ", deviceToken);
+          }
         });
       }, function (errorObject){
           console.log("The read failed: " + errorObject.code);
