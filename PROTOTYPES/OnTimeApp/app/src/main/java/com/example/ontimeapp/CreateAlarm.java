@@ -119,7 +119,7 @@ public class CreateAlarm extends Fragment implements View.OnClickListener {
                 Fragment selectedGroup = new SelectedGroup();
                 selectedGroup.setArguments(bundle);
 
-                fragmentManagement.replaceMainFragment((TextView)getActivity().findViewById(R.id.title_activity), transaction, selectedGroup, groupCode);
+                fragmentManagement.replaceMainFragment((TextView)getActivity().findViewById(R.id.title_activity), transaction, selectedGroup, "SQUADS");
             }
         }
     }

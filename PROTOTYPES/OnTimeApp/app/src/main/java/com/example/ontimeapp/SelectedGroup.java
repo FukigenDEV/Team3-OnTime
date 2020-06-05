@@ -55,7 +55,7 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
         TextView setGroupName = rootView.findViewById(R.id.groupname);
         TextView setGroupCode = rootView.findViewById(R.id.groupcode);
         setGroupName.setText(groupName);
-        setGroupCode.setText(groupCode + " (others can use this code to join your group)");
+        setGroupCode.setText(groupCode);
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
