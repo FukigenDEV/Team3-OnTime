@@ -95,6 +95,9 @@ public class AlarmSyncWorker extends Worker {
                                             Log.d("ALARMSYNCMANAGER", "ALARM CALLED");
                                             Log.d("ALARMSYNCMANAGER", "Time for alarm: " + alarmDateFull);
                                             Intent intent = new Intent(myContext, AlarmReceiver.class);
+                                            String groupId = dataSnapshot1.child("groupId").getValue().toString();
+                                            intent.putExtra("groupId", groupId);
+                                            intent.putExtra("alarmName", alarmName);
                                             pendingIntent = PendingIntent.getBroadcast(myContext, 0, intent, 0);
                                             alarmManager.set(AlarmManager.RTC_WAKEUP, alarmDateFull.getTime(), pendingIntent);
                                         }

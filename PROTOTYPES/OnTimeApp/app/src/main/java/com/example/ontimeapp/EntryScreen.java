@@ -73,7 +73,6 @@ public class EntryScreen extends Fragment {
 
                     String userName = user.getName();
                     String userToken = user.getDeviceToken();
-                    System.out.println(userName + userToken);
 
                     Fragment mainMenu = new MainMenu();
                     Bundle bundle = new Bundle();

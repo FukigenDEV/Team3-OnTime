@@ -21,12 +21,17 @@ public class AlarmActive extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarmactive);
+        final String groupId = getIntent().getStringExtra("groupId");
+        final String alarmName = getIntent().getStringExtra("alarmName");
 
         dismissAlarm = findViewById(R.id.dismissAlarm);
         dismissAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainUI.class);
+                intent.putExtra("TARGETSCREEN", "GROUPALARMSTATUS");
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("alarmName", alarmName);
                 startActivity(intent);
                 finish();
             }

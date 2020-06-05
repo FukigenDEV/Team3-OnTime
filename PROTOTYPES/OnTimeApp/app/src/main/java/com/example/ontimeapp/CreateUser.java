@@ -80,12 +80,10 @@ public class CreateUser extends Fragment implements View.OnClickListener {
                             }
                             String token = task.getResult().getToken();
                             Log.d(TAG, token);
-                            Toast.makeText(getActivity(), token, Toast.LENGTH_SHORT).show();
                             User user = new User(name, token, phone);
                             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                             DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(androidId);
                             databaseReference.setValue(user);
-                            Toast.makeText(getActivity(), "Database Updated", Toast.LENGTH_SHORT).show();
 
                             Fragment mainMenu = new MainMenu();
                             Bundle bundle = new Bundle();
