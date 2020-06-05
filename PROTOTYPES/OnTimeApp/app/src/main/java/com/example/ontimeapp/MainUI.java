@@ -47,7 +47,8 @@ public class MainUI extends AppCompatActivity {
     LinearLayout navParent, global_nav;
     FrameLayout flGlobal;
     LayoutInflater layoutInflater;
-    String userName, userToken, androidId;
+    String androidId;
+    Bundle bundle;
 
     NavItem[] navItemArray;
     List<LinearLayout> navLayoutList;
@@ -97,7 +98,7 @@ public class MainUI extends AppCompatActivity {
                     String userToken = user.getDeviceToken();
 
                     Fragment mainMenu = new MainMenu();
-                    Bundle bundle = new Bundle();
+                    bundle = new Bundle();
                     bundle.putString("androidId", androidId);
                     bundle.putString("userName", userName);
                     bundle.putString("userToken", userToken);
@@ -190,11 +191,6 @@ public class MainUI extends AppCompatActivity {
                 Log.d("navParent XPos", ""+navParent.getTranslationX());
             }
         });
-
-        final Bundle bundle = new Bundle();
-        bundle.putString("androidId", androidId);
-        bundle.putString("userName", userName);
-        bundle.putString("userToken", userToken);
 
         subnavButton3.setOnClickListener(new View.OnClickListener() {
             @Override

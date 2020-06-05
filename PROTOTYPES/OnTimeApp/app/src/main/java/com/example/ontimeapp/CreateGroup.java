@@ -68,7 +68,7 @@ public class CreateGroup extends Fragment implements View.OnClickListener {
 
         if(viewId == R.id.confirmGroupNamebtn) {
             name = etgroupName.getText().toString();
-            groupId = generateId(10);
+            groupId = generateId(5);
 
             Group group = new Group(groupId, name);
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
