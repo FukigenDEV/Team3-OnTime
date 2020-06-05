@@ -23,7 +23,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.MyViewHold
     String teamcode;
     Context context;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView alarmName;
         TextView alarmDate;
         TextView alarmTime;

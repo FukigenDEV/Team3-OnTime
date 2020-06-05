@@ -1,5 +1,6 @@
 package com.example.ontimeapp;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,16 +10,53 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class FirebaseMSGService extends FirebaseMessagingService {
 
     private static final String TAG = "FirebaseMSGService";
+
+    @Override
+    public void onNewToken(final String newToken){
+        super.onNewToken(newToken);
+
+        @SuppressLint("HardwareIds") final String androidId = Settings.Secure.getString(getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseReference = firebaseDatabase.getReference();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("Users").child(androidId).exists()){
+                    databaseReference.child("Users").child(androidId).child("deviceToken").setValue(newToken);
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.child("Groups").getChildren()){
+                        if(dataSnapshot1.child("Members").hasChild(androidId)){
+                            String groupcode = dataSnapshot1.getKey();
+                            databaseReference.child("Groups").child(groupcode).child("Members").child(androidId).child("deviceToken").setValue(newToken);
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), databaseError.getCode(), Toast.LENGTH_SHORT);
+            }
+        });
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage){

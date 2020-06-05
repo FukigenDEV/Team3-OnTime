@@ -54,6 +54,7 @@ exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Memb
       ref.once("value", function(snapshot){
         snapshot.forEach(function(childSnapshot){
           const deviceToken = childSnapshot.child("deviceToken").val();
+          const deviceId = childSnapshot.key;
           if(AndroidID !== deviceToken){
             const payload = {
               data: {
