@@ -51,7 +51,7 @@ exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Memb
       const GroupID = context.params.GroupID;
       const AndroidID = context.params.AndroidID;
       var ref = admin.database().ref(`/Groups/${GroupID}/Members`);
-      ref.once("value", function(snapshot){
+      return ref.once("value", function(snapshot){
         snapshot.forEach(function(childSnapshot){
           const deviceToken = childSnapshot.child("deviceToken").val();
           const deviceId = childSnapshot.key;
@@ -65,12 +65,13 @@ exports.groupJoinedNotification = functions.database.ref('/Groups/{GroupID}/Memb
             };
             admin.messaging().send(payload)
             .then(function(response) {
-              return console.log("Successfully sent message:", response);
+              return console.log("Successfully sent message:", response, deviceToken);
               })
               .catch(function(error) {
-              return console.log("Error sending message:", error);
+              return console.log("Error sending message:", error, deviceToken);
               });
           }
+          console.log("Message not sent to new user: ", deviceToken);
         });
       }, function (errorObject){
           console.log("The read failed: " + errorObject.code);
@@ -93,7 +94,7 @@ exports.SetAlarmUserState = functions.database.ref('/Groups/{GroupID}/Alarms/{Al
     const AlarmName = context.params.AlarmName;
 
     var ref = admin.database().ref(`/Groups/${GroupID}/Members`);
-    ref.once("value", function(snapshot){
+    return ref.once("value", function(snapshot){
       snapshot.forEach(function(childSnapshot){
         const deviceToken = childSnapshot.key;
         admin.database().ref(`/Groups/${GroupID}/Alarms/${AlarmName}/MemberState`).child(deviceToken).set("NOTAWAKE");
@@ -107,12 +108,12 @@ exports.SetAlarmUserState = functions.database.ref('/Groups/{GroupID}/Alarms/{Al
 // This function automatically runs every 5 minutes and checks the database (Groups node)
 // Every alarm in the database gets comparet to the current time
 // If the alarm time is behind the current time, the alarm gets deleted
-exports.SFDeleteAlarms = functions.pubsub.schedule('every 5 minutes')
+exports.SFDeleteAlarms = functions.pubsub.schedule('every 10 minutes')
   .onRun((context) => {
     const currentTime = Date.now();
 
     var ref = admin.database().ref(`/Groups`);
-    ref.once("value", function(snapshot){
+    return ref.once("value", function(snapshot){
       snapshot.forEach(function(childSnapshot){
         if(childSnapshot.hasChild("Alarms")){
           const groupID = childSnapshot.child("groupId").val();
