@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OnTimeApp</string>
+    <string name="app_name">On Time</string>
     <string name="title_activity">ACTIVITY TITLE</string>
     <string name="notification_channel_id" />
 </resources>

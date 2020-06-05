@@ -77,8 +77,6 @@ public class AlarmSyncWorker extends Worker {
             e.printStackTrace();
         }
 
-        FirebaseDatabase.getInstance().getReference().child("Testing").child(currentDate + " " + currentTime).setValue("1");
-
         FirebaseDatabase.getInstance().getReference().child("Groups")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
