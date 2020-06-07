@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -83,6 +84,10 @@ public class JoinGroup extends Fragment implements View.OnClickListener {
                             User user = new User(userName, userToken, "");
                             databaseReference1.child(groupid).child("Members").child(androidId).setValue(user);
                             Toast.makeText(getActivity(), "Successfully joined the group!", Toast.LENGTH_SHORT).show();
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            FragmentManagement fragmentManagement = new FragmentManagement();
+                            TextView title = getActivity().findViewById(R.id.title_activity);
+                            fragmentManagement.replaceMainFragment(title, transaction, getFragmentManager().findFragmentByTag("TEAMS"), "TEAMS");
                         }
                     }else{
                         Toast.makeText(getActivity(), groupid + " - This group does not exist. Please try again", Toast.LENGTH_SHORT).show();

@@ -1,6 +1,8 @@
 package com.example.ontimeapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +57,7 @@ public class GroupAlarmStatusAdapter extends RecyclerView.Adapter<GroupAlarmStat
             holder.statusImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "CALLING " + Name.get(position), Toast.LENGTH_SHORT).show();
+                    callGroupMember(Number.get(position));
                 }
             });
         }else if (Status.get(position).equals("AWAKE")){
@@ -68,6 +70,10 @@ public class GroupAlarmStatusAdapter extends RecyclerView.Adapter<GroupAlarmStat
     @Override
     public int getItemCount(){
         return Name.size();
+    }
+
+    private void callGroupMember(final String phoneNumber){
+        context.startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null)));
     }
 
 }
