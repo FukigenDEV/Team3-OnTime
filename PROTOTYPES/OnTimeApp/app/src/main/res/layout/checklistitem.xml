@@ -21,7 +21,7 @@
 
         <TextView
             android:paddingVertical="10dp"
-            android:id="@+id/memberName"
+            android:id="@+id/userTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_weight="0.7"
@@ -38,7 +38,7 @@
         </TextView>
 
         <ImageView
-            android:id="@+id/statusImage"
+            android:id="@+id/checkBoximg"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             app:layout_constraintHeight_percent="0.9"
