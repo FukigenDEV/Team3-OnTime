@@ -23,6 +23,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -32,37 +39,93 @@ import java.util.concurrent.TimeUnit;
 
 public class MainUI extends AppCompatActivity {
 
+    String TAG = "MainUI";
+
     private Context context;
 
-    ImageView icNav;
+    ImageView icNav, subnavButton1, subnavButton2, subnavButton3;
     LinearLayout navParent, global_nav;
     FrameLayout flGlobal;
     LayoutInflater layoutInflater;
+    String androidId;
+    Bundle bundle;
 
     NavItem[] navItemArray;
     List<LinearLayout> navLayoutList;
 
+    @SuppressLint("HardwareIds")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = getApplicationContext();
+
+        findViewById(R.id.global_titlebar).setVisibility(View.INVISIBLE);
+        findViewById(R.id.title_activity).setVisibility(View.INVISIBLE);
+        findViewById(R.id.ic_nav).setVisibility(View.INVISIBLE);
+        findViewById(R.id.subNav).setVisibility(View.INVISIBLE);
 
         icNav = findViewById(R.id.ic_nav);
+
+        subnavButton1 = findViewById(R.id.nav_bg_1);
+        subnavButton2 = findViewById(R.id.nav_bg_2);
+        subnavButton3 = findViewById(R.id.nav_bg_3);
 
         global_nav = findViewById(R.id.global_nav);
         navParent = findViewById(R.id.layout_sidenav);
         navLayoutList = Arrays.asList(global_nav, navParent);
         flGlobal = findViewById(R.id.global_framelayout);
 
-        @SuppressLint("HardwareIds") final String androidId = Settings.Secure.getString(MainUI.this.getContentResolver(),
+        androidId = Settings.Secure.getString(MainUI.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users");
+
+        final FragmentManagement fragmentManagement = new FragmentManagement();
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                TextView activityTitle = findViewById(R.id.title_activity);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                if (dataSnapshot.child(androidId).exists()) {
+                    Toast.makeText(context, "Android ID exists in database", Toast.LENGTH_SHORT).show();
+                    User user = dataSnapshot.child(androidId).getValue(User.class);
+
+                    String userName = user.getName();
+                    String userToken = user.getDeviceToken();
+
+                    Fragment mainMenu = new MainMenu();
+                    bundle = new Bundle();
+                    bundle.putString("androidId", androidId);
+                    bundle.putString("userName", userName);
+                    bundle.putString("userToken", userToken);
+                    mainMenu.setArguments(bundle);
+
+                    fragmentManagement.setMainFragment(activityTitle, transaction, mainMenu, "TEAMS");
+                } else {
+                    Toast.makeText(context, androidId + "Android ID does not exist in database", Toast.LENGTH_SHORT).show();
+
+                    Fragment createUser = new CreateUser();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("androidId", androidId);
+                    createUser.setArguments(bundle);
+
+                    Log.d(TAG, "androidId: " + androidId);
+
+                    fragmentManagement.replaceMainFragment(activityTitle, transaction, createUser, "CREATE USER");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(context, databaseError.getCode(), Toast.LENGTH_SHORT);
+            }
+        });
+
         final TextView activityTitle = findViewById(R.id.title_activity);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        FragmentManagement fragmentManagement = new FragmentManagement();
-        fragmentManagement.replaceMainFragment(activityTitle, transaction, new EntryScreen(), "ENTRYSCREEN");
-
         layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
         navItemArray = new NavItem[1];
@@ -129,7 +192,35 @@ public class MainUI extends AppCompatActivity {
             }
         });
 
-        //"fCg8fC9lRfWNzSGFA5J8Us:APA91bHZj16akmOk3tdIiXltZsGOwzI6wGKNC9VupmUZv1R0-hCMojxee7H1AIhW74nomoxg1WWXW848wZCjMNJOFtW8oNEQDjGq11Td3U85UOl7ObmgnVYJJ4pe5omdgtHrQN3hvwVU"
+        subnavButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                Fragment setTaskActivity = new SetTasksActivity();
+                setTaskActivity.setArguments(bundle);
+                fragmentManagement.replaceMainFragment(activityTitle, transaction, setTaskActivity, "SET TASKS");
+            }
+        });
+
+        subnavButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                Fragment joinGroup = new JoinGroup();
+                joinGroup.setArguments(bundle);
+                fragmentManagement.replaceMainFragment(activityTitle, transaction, joinGroup, "JOIN TEAM");
+            }
+        });
+
+        subnavButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                Fragment createGroup = new CreateGroup();
+                createGroup.setArguments(bundle);
+                fragmentManagement.replaceMainFragment(activityTitle, transaction, createGroup, "CREATE TEAM");
+            }
+        });
 
         Constraints constraints = new Constraints.Builder()
                 .build();
@@ -153,38 +244,6 @@ public class MainUI extends AppCompatActivity {
         }
     }
 
-//    public void onBackPressed() {
-//        FragmentManagement fragmentManagement = new FragmentManagement();
-//        fragmentManagement.logFragments(getSupportFragmentManager());
-//
-//        int fragmentAmount = getSupportFragmentManager().getBackStackEntryCount();
-//        FragmentManager.BackStackEntry fragmentPrev = getSupportFragmentManager().getBackStackEntryAt(fragmentAmount-2);
-//        FragmentManager.BackStackEntry fragmentCurr = getSupportFragmentManager().getBackStackEntryAt(fragmentAmount-1);
-//        String tag = fragmentPrev.getName();
-//        String tag2 = fragmentCurr.getName();
-//
-//        Log.d("BackPress", ""+tag+" Fragments"+getSupportFragmentManager().getFragments());
-//
-//        if((!tag.equals("Home")) && (!tag.equals("Create User"))) {
-//            final TextView activityTitle = findViewById(R.id.title_activity);
-//
-//            Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-//            Fragment fragment2 = getSupportFragmentManager().findFragmentByTag(tag2);
-//
-//            this.getSupportFragmentManager().popBackStackImmediate();
-//
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.remove(fragment2);
-//            transaction.replace(R.id.global_framelayout, fragment, tag);
-//            transaction.commit();
-//
-//            activityTitle.setText(tag);
-//        } else {
-//            finishAffinity();
-//        }
-//    }
-
-
     @Override
     public void onBackPressed() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -192,7 +251,7 @@ public class MainUI extends AppCompatActivity {
         fragmentManagement.logFragments(getSupportFragmentManager());
 
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.global_framelayout);
-        if(!(f instanceof MainMenu)) {
+        if(!(f instanceof MainMenu) && !(f instanceof CreateUser)) {
             fragmentManagement.replaceMainFragment((TextView) findViewById(R.id.title_activity), transaction, getSupportFragmentManager().findFragmentByTag("TEAMS"), "TEAMS");
         } else {
             finishAffinity();

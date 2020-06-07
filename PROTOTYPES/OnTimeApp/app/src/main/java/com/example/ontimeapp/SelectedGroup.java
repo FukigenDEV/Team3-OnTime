@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
 public class SelectedGroup extends Fragment implements View.OnClickListener {
@@ -55,7 +58,7 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
         TextView setGroupName = rootView.findViewById(R.id.groupname);
         TextView setGroupCode = rootView.findViewById(R.id.groupcode);
         setGroupName.setText(groupName);
-        setGroupCode.setText(groupCode + " (others can use this code to join your group)");
+        setGroupCode.setText(groupCode);
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
@@ -96,6 +99,15 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
                         Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
+        LinearLayout progressbarHolder = (LinearLayout) rootView.findViewById(R.id.progressbarHolder);
+        View progressbarItem = inflater.inflate(R.layout.task_progress_item, progressbarHolder, false);
+        TextView progressbarName = progressbarItem.findViewById(R.id.userTask);
+
+        progressbarName.setText("lol");
+
+        progressbarHolder.addView(progressbarItem);
 
         return rootView;
     }

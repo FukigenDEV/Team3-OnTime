@@ -11,45 +11,127 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="null"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:text="Lorem ipsum"
+        android:textAllCaps="true"
+        android:textSize="25sp"
+        android:textColor="@color/colorGlobal2"
+        android:fontFamily="@font/opensans_regular"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
-    <TextView
-        android:id="@+id/groupcode"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/groupcodeHolder"
+        android:background="@drawable/layout_bg_rect_l"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="null"
-        android:textColor="#000000"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupname"
-        app:layout_constraintVertical_bias="0.011"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintTop_toBottomOf="@id/groupname"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        >
+
+        <ImageView
+            android:id="@+id/sgHeader1"
+            android:src="@drawable/layout_bg_rect"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/sgHeaderText1"
+            android:text="SQUAD CODE"
+            android:textSize="8sp"
+            android:textColor="@color/colorGlobal4"
+            android:fontFamily="@font/opensans_semibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            app:layout_constraintBottom_toBottomOf="@id/sgHeader1"
+            app:layout_constraintTop_toTopOf="@id/sgHeader1"
+            app:layout_constraintStart_toStartOf="@id/sgHeader1"
+            />
+
+        <TextView
+            android:id="@+id/groupcode"
+            android:text="133780085"
+            android:textSize="25sp"
+            android:textColor="@color/colorGlobal4"
+            android:fontFamily="@font/opensans_regular"
+            android:padding="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/sgHeader1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/progressbarHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@id/groupcodeHolder"
+        app:layout_constraintTop_toBottomOf="@id/groupcodeHolder"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/alarmsholder"
         android:layout_height="0dp"
         android:layout_width="0dp"
-        app:layout_constraintHeight_percent="0.70"
-        app:layout_constraintWidth_percent="0.90"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.5"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/groupcode"
-        app:layout_constraintBottom_toTopOf="@id/addAlarmBtn">
+        app:layout_constraintTop_toBottomOf="@id/progressbarHolder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
 
+        <ImageView
+            android:id="@+id/sgHeader2"
+            android:src="@drawable/layout_bg_rect"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/sgHeaderText2"
+            android:text="ALARMS"
+            android:textSize="8sp"
+            android:textColor="@color/colorGlobal4"
+            android:fontFamily="@font/opensans_semibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            app:layout_constraintBottom_toBottomOf="@id/sgHeader2"
+            app:layout_constraintTop_toTopOf="@id/sgHeader2"
+            app:layout_constraintStart_toStartOf="@id/sgHeader2"
+            />
+
+        <Button
+            android:id="@+id/addAlarmBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Add New Alarm"
+            android:layout_marginTop="1dp"
+            app:layout_constraintTop_toBottomOf="@id/sgHeader2"
+            app:layout_constraintStart_toStartOf="@id/sgHeader2"
+            app:layout_constraintEnd_toEndOf="@id/sgHeader2"
+            />
 
         <RelativeLayout
             android:id="@+id/relativelayout"
@@ -57,12 +139,12 @@
             android:layout_height="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addAlarmBtn"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent">
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -70,17 +152,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/addAlarmBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="165dp"
-        android:layout_marginLeft="165dp"
-        android:layout_marginEnd="159dp"
-        android:layout_marginRight="159dp"
-        android:layout_marginBottom="32dp"
-        android:text="Add New Alarm"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
