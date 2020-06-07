@@ -5,103 +5,90 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/setAlarmName"
-        android:layout_width="320dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="16dp"
-        android:hint="Give your alarm a name!"
-        app:layout_constraintBottom_toTopOf="@+id/newAlarmDatebtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/newAlarmDatetxt"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/newAlarmTimetxt"
-        app:layout_constraintEnd_toStartOf="@+id/newAlarmDatebtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setAlarmName" />
-
-    <Button
-        android:id="@+id/newAlarmDatebtn"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/newAlarmDatetxt"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="16dp"
-        android:layout_toEndOf="@+id/newAlarmDatetxt"
-        android:layout_toRightOf="@+id/newAlarmDatetxt"
-        android:text="SELECT DATE"
-        app:layout_constraintBottom_toTopOf="@+id/newAlarmTimebtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/newAlarmDatetxt"
-        app:layout_constraintTop_toBottomOf="@+id/setAlarmName" />
-
-    <EditText
-        android:id="@+id/newAlarmTimetxt"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/newAlarmDatetxt"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="275dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/newAlarmTimebtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newAlarmDatetxt" />
-
-    <Button
-        android:id="@+id/newAlarmTimebtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/newAlarmDatebtn"
-        android:layout_alignStart="@+id/newAlarmDatebtn"
-        android:layout_alignLeft="@+id/newAlarmDatebtn"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="275dp"
-        android:text="SELECT TIME"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/newAlarmTimetxt"
-        app:layout_constraintTop_toBottomOf="@+id/newAlarmDatebtn"
-        app:layout_constraintVertical_bias="1.0" />
+        >
 
-    <Button
-        android:id="@+id/confirmNewAlarmbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="195dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="32dp"
-        android:text="Confirm Alarm"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newAlarmTimebtn" />
+        <EditText
+            android:id="@+id/setAlarmName"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:hint="Alarm name"
+            android:textColorHint="@color/colorGlobal2"
+            android:textColor="@color/colorGlobal4"
+            android:fontFamily="@font/opensans_regular"
+            app:layout_constraintBottom_toTopOf="@+id/newAlarmDatebtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/newAlarmDatetxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorGlobal4"
+            android:fontFamily="@font/opensans_regular"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toStartOf="@+id/newAlarmDatebtn"
+            app:layout_constraintStart_toStartOf="@id/setAlarmName"
+            app:layout_constraintTop_toBottomOf="@+id/setAlarmName" />
+
+        <Button
+            android:id="@+id/newAlarmDatebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/newAlarmDatetxt"
+            android:layout_toRightOf="@+id/newAlarmDatetxt"
+            android:text="SELECT DATE"
+            android:textColor="@color/colorGlobal1"
+            android:fontFamily="@font/opensans_regular"
+            android:layout_marginTop="25dp"
+            app:layout_constraintBottom_toTopOf="@+id/newAlarmTimebtn"
+            app:layout_constraintEnd_toEndOf="@id/setAlarmName"
+            app:layout_constraintStart_toEndOf="@+id/newAlarmDatetxt"
+            app:layout_constraintTop_toBottomOf="@+id/setAlarmName" />
+
+        <EditText
+            android:id="@+id/newAlarmTimetxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorGlobal4"
+            android:fontFamily="@font/opensans_regular"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/newAlarmDatetxt"
+            app:layout_constraintStart_toStartOf="@id/newAlarmDatetxt"
+            app:layout_constraintEnd_toStartOf="@id/newAlarmDatebtn"/>
+
+        <Button
+            android:id="@+id/newAlarmTimebtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="SELECT TIME"
+            android:textColor="@color/colorGlobal1"
+            android:fontFamily="@font/opensans_regular"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toEndOf="@id/newAlarmTimetxt"
+            app:layout_constraintTop_toBottomOf="@id/newAlarmDatebtn"
+            app:layout_constraintEnd_toEndOf="@id/newAlarmDatebtn"
+            />
+
+        <Button
+            android:id="@+id/confirmNewAlarmbtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Confirm Alarm"
+            android:textColor="@color/colorGlobal1"
+            android:fontFamily="@font/opensans_regular"
+            android:layout_marginTop="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newAlarmTimebtn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
