@@ -98,7 +98,7 @@ public class CreateAlarm extends Fragment implements View.OnClickListener {
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    alarmTime.setText(hourOfDay + ":" + minute);
+                    alarmTime.setText(String.format("%02d:%02d", hourOfDay, minute));
                 }
             }, pickedHour, pickedMinute, true);
             timePickerDialog.show();
