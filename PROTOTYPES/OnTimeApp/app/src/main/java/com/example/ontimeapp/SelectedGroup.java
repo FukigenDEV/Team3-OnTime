@@ -1,20 +1,17 @@
 package com.example.ontimeapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,8 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import java.util.List;
 
 
 public class SelectedGroup extends Fragment implements View.OnClickListener {
@@ -68,6 +64,8 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
         addAlarm = rootView.findViewById(R.id.addAlarmBtn);
         addAlarm.setOnClickListener(this);
 
+        final LinearLayout progressbarHolder = (LinearLayout) rootView.findViewById(R.id.progressbarHolder);
+
         FirebaseDatabase.getInstance().getReference().child("Groups")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -87,6 +85,42 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
                                         AlarmTime.add(time);
                                     }
                                 }
+
+                                if (snapshot.hasChild("Members")){
+                                    for (DataSnapshot snapshot2 : snapshot.child("Members").getChildren()){
+                                        View progressbarItem = inflater.inflate(R.layout.task_progress_item, progressbarHolder, false);
+                                        TextView progressbarName = progressbarItem.findViewById(R.id.userTask);
+
+                                        String name = snapshot2.child("name").getValue().toString();
+                                        final String deviceToken = snapshot2.child("deviceToken").getValue().toString();
+                                        final ArrayList<String> phone = new ArrayList<>();
+
+                                        FirebaseDatabase.getInstance().getReference().child("Users")
+                                                .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                                            String token = snapshot.child("deviceToken").getValue().toString();
+                                                            if(token.equals(deviceToken)) {
+//                                                                phone.add(snapshot.child("phone").getValue().toString());
+                                                                Log.d("Phone", ""+snapshot.child("phone").getValue().toString());
+                                                            }
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                        Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                                                    }
+
+                                                });
+
+                                        progressbarName.setText(name);
+                                        progressbarHolder.addView(progressbarItem);
+//                                        Log.d("ProgressBar", name + ": " + phone.get(0));
+                                    }
+                                }
                             }
                         }
                         AlarmsAdapter alarmsAdapter = new AlarmsAdapter(getContext(), AlarmName, AlarmDate, AlarmTime, groupCode);
@@ -99,15 +133,6 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
                         Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
-        LinearLayout progressbarHolder = (LinearLayout) rootView.findViewById(R.id.progressbarHolder);
-        View progressbarItem = inflater.inflate(R.layout.task_progress_item, progressbarHolder, false);
-        TextView progressbarName = progressbarItem.findViewById(R.id.userTask);
-
-        progressbarName.setText("lol");
-
-        progressbarHolder.addView(progressbarItem);
 
         return rootView;
     }
@@ -128,4 +153,31 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
             fragmentManagement.replaceMainFragment(addAlarm, transaction, addNewAlarm, "Add new Alarm");
         }
     }
+
+//    public String getPhoneNumber(final String token) {
+//        final List<String> phoneNumber = new ArrayList<>(1);
+//
+//        FirebaseDatabase.getInstance().getReference().child("Users")
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+//                            String deviceToken = snapshot.child("deviceToken").getValue().toString();
+//                            if(deviceToken.equals(token))              {
+//                                phoneNumber.add(snapshot.child("phone").getValue().toString());
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//                        Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                });
+//
+//        Log.d("PhoneReturn", ""+phoneNumber.get(0));
+//        return phoneNumber.get(0);
+//    }
 }
