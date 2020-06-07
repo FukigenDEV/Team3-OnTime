@@ -66,6 +66,7 @@ public class MainMenu extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        title = getActivity().findViewById(R.id.title_activity);
         title.setText("TEAMS");
     }
 

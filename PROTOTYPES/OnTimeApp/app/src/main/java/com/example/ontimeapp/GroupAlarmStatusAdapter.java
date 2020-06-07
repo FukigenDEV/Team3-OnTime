@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -58,7 +59,8 @@ public class GroupAlarmStatusAdapter extends RecyclerView.Adapter<GroupAlarmStat
                 }
             });
         }else if (Status.get(position).equals("AWAKE")){
-            holder.statusImage.setImageResource(R.drawable.iconmonstr_smiley_13_240);
+            holder.statusImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.iconmonstr_smiley_13_240));
+            holder.statusImage.setVisibility(View.VISIBLE);
         }
 
     }

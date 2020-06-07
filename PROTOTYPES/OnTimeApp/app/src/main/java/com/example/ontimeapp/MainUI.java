@@ -47,56 +47,13 @@ public class MainUI extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (getIntent() != null) {
-            if (getIntent().getExtras() != null) {
-                Bundle bundle = getIntent().getExtras();
-                if (!bundle.getString("TARGETSCREEN").equals(null)) {
-                    String TARGETSCREEN = bundle.getString("TARGETSCREEN");
-                    if (TARGETSCREEN.equals("GROUPALARMSTATUS")) {
-                        System.out.println("WE ARE HERE");
-                        String groupId = bundle.getString("groupId");
-                        String alarmName = bundle.getString("alarmName");
-
-                        Bundle alarmBundle = new Bundle();
-                        alarmBundle.putString("groupId", groupId);
-                        alarmBundle.putString("alarmName", alarmName);
-
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        FragmentManagement fragmentManagement = new FragmentManagement();
-//                        fragmentManagement.replaceMainFragment((TextView) findViewById(R.id.title_activity), transaction, new GroupAlarmStatus(), "SQUAD PROGRESS");
-
-                    }
-                }
-            }
-        }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        if (getIntent() != null){
-            if (getIntent().getExtras() != null){
-                Bundle bundle = getIntent().getExtras();
-                if(!bundle.getString("TARGETSCREEN").equals(null)){
-                    String TARGETSCREEN = bundle.getString("TARGETSCREEN");
-                    if(TARGETSCREEN.equals("GROUPALARMSTATUS")){
-                        System.out.println("WE ARE HERE");
-                        String groupId = bundle.getString("groupId");
-                        String alarmName = bundle.getString("alarmName");
-
-                        Bundle alarmBundle = new Bundle();
-                        alarmBundle.putString("groupId", groupId);
-                        alarmBundle.putString("alarmName", alarmName);
-
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        FragmentManagement fragmentManagement = new FragmentManagement();
-//                        fragmentManagement.replaceMainFragment((TextView) findViewById(R.id.title_activity), transaction, new GroupAlarmStatus(), "SQUAD PROGRESS");
-                    }
-                }
-            }
-        }
 
         icNav = findViewById(R.id.ic_nav);
 

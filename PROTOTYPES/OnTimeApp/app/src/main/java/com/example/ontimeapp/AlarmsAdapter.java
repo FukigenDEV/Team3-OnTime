@@ -1,6 +1,7 @@
 package com.example.ontimeapp;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -58,6 +61,12 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.MyViewHold
         holder.alarmName.setText(AlarmName.get(position));
         holder.alarmDate.setText(AlarmDate.get(position));
         holder.alarmTime.setText(AlarmTime.get(position));
+
+        final Bundle bundle = new Bundle();
+        bundle.putString("groupId", teamcode);
+        bundle.putString("alarmName", AlarmName.get(position));
+
+
         holder.removeAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +89,18 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.MyViewHold
                                 Toast.makeText(context, databaseError.getCode(), Toast.LENGTH_SHORT).show();
                             }
                         });
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManagement fragmentManagement = new FragmentManagement();
+                FragmentTransaction transaction = ((MainUI)context).getSupportFragmentManager().beginTransaction();
+
+                Fragment groupAlarmStatus = new GroupAlarmStatus();
+                groupAlarmStatus.setArguments(bundle);
+
+                fragmentManagement.replaceMainFragment((TextView) ((MainUI) context).findViewById(R.id.title_activity), transaction, groupAlarmStatus, "SQUAD STATUS");
             }
         });
     }
