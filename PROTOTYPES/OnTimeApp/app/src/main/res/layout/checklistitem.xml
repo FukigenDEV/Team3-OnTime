@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardview"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_margin="5dp"
+    android:background="#ffffff"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rowlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#999999"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:backgroundTint="@color/colorGlobal3">
+
+        <TextView
+            android:paddingVertical="10dp"
+            android:id="@+id/memberName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="0.7"
+            android:text="Member Name"
+            android:fontFamily="@font/opensans_bold"
+            android:textColor="@color/colorGlobal4"
+            android:textStyle="normal"
+            android:textSize="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/statusImage"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.9"
+            android:src="@drawable/iconmonstr_empty_checkbox_11_240"
+            android:adjustViewBounds="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            android:visibility="invisible"
+            >
+        </ImageView>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
