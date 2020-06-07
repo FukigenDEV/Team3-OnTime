@@ -37,7 +37,7 @@ public class AlarmActive extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseDatabase.getInstance().getReference("Groups").child(groupId).child("Alarms").child(alarmName).child("MemberState").child(androidId).setValue("AWAKE");
 
-                Intent intent = new Intent(getApplicationContext(), MainMenu.class);
+                Intent intent = new Intent(getApplicationContext(), MainUI.class);
                 startActivity(intent);
                 finish();
             }
