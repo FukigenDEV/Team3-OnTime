@@ -22,7 +22,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.MyViewHold
     ArrayList<String> Name, Code;
     Context context;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView groupName;
         TextView groupCode;
         public MyViewHolder(View groupView){

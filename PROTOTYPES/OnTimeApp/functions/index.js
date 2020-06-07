@@ -37,6 +37,47 @@ admin.initializeApp();
 //     });
 //--------------------------------------------------------------------------------------------//
 
+
+
+
+//--------------------------------------------------------------------------------------------//
+// REMOVED TO NOT CONFLICT WITH THE NEW ALARM FUNCTIONS IN THE APP
+// MIGHT BE REWORKED IN THE FUTURE
+
+// DELETE PASSED ALARMS
+// This function automatically runs every 5 minutes and checks the database (Groups node)
+// Every alarm in the database gets comparet to the current time
+// If the alarm time is behind the current time, the alarm gets deleted
+// exports.SFDeleteAlarms = functions.pubsub.schedule('every 10 minutes')
+//   .onRun((context) => {
+//     const currentTime = Date.now();
+//
+//     var ref = admin.database().ref(`/Groups`);
+//     return ref.once("value", function(snapshot){
+//       snapshot.forEach(function(childSnapshot){
+//         if(childSnapshot.hasChild("Alarms")){
+//           const groupID = childSnapshot.child("groupId").val();
+//           childSnapshot.forEach(function(childSnapshot2){
+//             if(childSnapshot2.key === "Alarms"){
+//               childSnapshot2.forEach(function(alarmsSnapshot){
+//                 const alarmName = alarmsSnapshot.child("name").val();
+//                 const alarmMillis = alarmsSnapshot.child("milis").val();
+//                 if (alarmMillis < currentTime){
+//                   console.log("ALARM", alarmName, "DELETED FROM GROUP", groupID);
+//                   var deletedalarm = admin.database().ref(`/Groups/${groupID}/Alarms/${alarmName}`);
+//                   deletedalarm.remove();
+//                 }
+//               });
+//             }
+//           });
+//         }
+//       });
+//     }, function (errorObject){
+//         return console.log("The read failed: " + errorObject.code);
+//     });
+//   });
+//--------------------------------------------------------------------------------------------//
+
 // SEND NOTIFICATION WHEN USER ADDED TO
 // Listens for new tokens added to /Groups/{GroupID}/Members/{AndroidID} and sends
 // notification to the members of the groups telling them a new user has joined said group
@@ -99,42 +140,9 @@ exports.SetAlarmUserState = functions.database.ref('/Groups/{GroupID}/Alarms/{Al
     return ref.once("value", function(snapshot){
       snapshot.forEach(function(childSnapshot){
         const deviceToken = childSnapshot.key;
-        admin.database().ref(`/Groups/${GroupID}/Alarms/${AlarmName}/MemberState`).child(deviceToken).set("NOTAWAKE");
+        admin.database().ref(`/Groups/${GroupID}/Alarms/${AlarmName}/MemberState`).child(deviceToken).set("NOT AWAKE!");
       });
     }, function (errorObject){
         console.log("The read failed: " + errorObject.code);
-    });
-  });
-
-// DELETE PASSED ALARMS
-// This function automatically runs every 5 minutes and checks the database (Groups node)
-// Every alarm in the database gets comparet to the current time
-// If the alarm time is behind the current time, the alarm gets deleted
-exports.SFDeleteAlarms = functions.pubsub.schedule('every 10 minutes')
-  .onRun((context) => {
-    const currentTime = Date.now();
-
-    var ref = admin.database().ref(`/Groups`);
-    return ref.once("value", function(snapshot){
-      snapshot.forEach(function(childSnapshot){
-        if(childSnapshot.hasChild("Alarms")){
-          const groupID = childSnapshot.child("groupId").val();
-          childSnapshot.forEach(function(childSnapshot2){
-            if(childSnapshot2.key === "Alarms"){
-              childSnapshot2.forEach(function(alarmsSnapshot){
-                const alarmName = alarmsSnapshot.child("name").val();
-                const alarmMillis = alarmsSnapshot.child("milis").val();
-                if (alarmMillis < currentTime){
-                  console.log("ALARM", alarmName, "DELETED FROM GROUP", groupID);
-                  var deletedalarm = admin.database().ref(`/Groups/${groupID}/Alarms/${alarmName}`);
-                  deletedalarm.remove();
-                }
-              });
-            }
-          });
-        }
-      });
-    }, function (errorObject){
-        return console.log("The read failed: " + errorObject.code);
     });
   });

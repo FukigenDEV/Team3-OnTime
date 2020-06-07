@@ -15,14 +15,14 @@ import java.util.Calendar;
 public class AlarmReceiver extends BroadcastReceiver {
 
     public void onReceive(Context context, Intent intent) {
+        String groupId = intent.getStringExtra("groupId");
+        String alarmName = intent.getStringExtra("alarmName");
         Toast.makeText(context, "ALARM....", Toast.LENGTH_LONG).show();
         Log.d("ALARMRECEIVER", "ALARM CALLED");
 
-        Calendar calendar = Calendar.getInstance();
-        FirebaseApp.initializeApp(context);
-        FirebaseDatabase.getInstance().getReference().child("Testing_alarm").child(calendar.getTime().toString()).setValue("1");
-
         Intent i = new Intent();
+        i.putExtra("groupId", groupId);
+        i.putExtra("alarmName", alarmName);
         i.setClassName(context.getPackageName(), AlarmActive.class.getName());
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

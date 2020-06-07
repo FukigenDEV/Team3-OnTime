@@ -14,6 +14,7 @@ import androidx.work.WorkManager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -33,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -54,6 +56,12 @@ public class MainUI extends AppCompatActivity {
     List<LinearLayout> navLayoutList;
 
     @SuppressLint("HardwareIds")
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
