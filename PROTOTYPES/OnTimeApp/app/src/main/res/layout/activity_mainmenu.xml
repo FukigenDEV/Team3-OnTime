@@ -78,4 +78,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.676" />
 
+    <Button
+        android:id="@+id/GetTasksBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Tasks"
+        app:layout_constraintTop_toBottomOf="@+id/SetTasksBtn"
+        tools:layout_editor_absoluteX="156dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

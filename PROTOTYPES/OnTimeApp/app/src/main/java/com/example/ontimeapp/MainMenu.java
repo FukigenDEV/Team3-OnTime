@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ontimeapp.SetTasksActivity;
+
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,11 +43,13 @@ import java.util.Map;
 public class MainMenu extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "MainMenu";
-    String androidId, userName, userToken;
-    Button joinGroup, createGroup, setTasks;
+    String androidId, userName, userToken, tasktext;
+    Button joinGroup, createGroup, setTasks, checklist;
     TextView title;
     ArrayList<String> groupnames = new ArrayList<>();
     ArrayList<String> groupcodes = new ArrayList<>();
+    ArrayList<String> checklists = new ArrayList<>();
+    ArrayList<String> taskvalues = new ArrayList<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -85,6 +89,7 @@ public class MainMenu extends Fragment implements View.OnClickListener {
         joinGroup = rootView.findViewById(R.id.JoinGroupBtn);
         createGroup = rootView.findViewById(R.id.CreateGroupBtn);
         setTasks = rootView.findViewById(R.id.SetTasksBtn);
+        checklist = rootView.findViewById(R.id.setTask);
 
         setTasks.setOnClickListener(this);
         createGroup.setOnClickListener(this);
@@ -94,12 +99,13 @@ public class MainMenu extends Fragment implements View.OnClickListener {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        tasktext = checklist.getText().toString();
                         groupnames.clear();
                         groupcodes.clear();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                             if (snapshot.child("Members").hasChild(androidId)){
                                 String groupid = snapshot.getKey();
-                                String groupname = snapshot.child("groupName").getValue().toString();
+                                String groupname = snapshot.child(tasktext).getValue().toString();
                                 groupcodes.add(groupid);
                                 groupnames.add(groupname);
                             }
@@ -113,6 +119,32 @@ public class MainMenu extends Fragment implements View.OnClickListener {
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
                     }
+
+                });
+        FirebaseDatabase.getInstance().getReference().child("Users")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        checklists.clear();
+                        taskvalues.clear();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            if (snapshot.child("Tasks").hasChild(androidId)){
+                                String taskid = snapshot.getKey();
+                                String taskvalue = snapshot.child(tasktext).getValue().toString();
+                                checklists.add(taskid);
+                                taskvalues.add(taskvalue);
+                            }
+                        }
+                        GroupsAdapter groupsAdapter = new GroupsAdapter(getContext(), groupnames, groupcodes);
+                        recyclerView.setAdapter(groupsAdapter);
+                        groupsAdapter.notifyDataSetChanged();
+
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                    }
+
                 });
 
         // Inflate the layout for this fragment

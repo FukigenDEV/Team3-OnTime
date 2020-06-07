@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardview"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_margin="5dp"
+    android:background="#ffffff"
+    >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_books"
+    <LinearLayout
+        android:id="@+id/rowlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="@color/colorGlobal3">
+
+        <TextView
+            android:id="@+id/taskname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:fontFamily="@font/opensans_bold"
+            android:textColor="@color/colorGlobal4"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/taskvalue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:fontFamily="@font/opensans_regular"
+            android:textColor="@color/colorGlobal4"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

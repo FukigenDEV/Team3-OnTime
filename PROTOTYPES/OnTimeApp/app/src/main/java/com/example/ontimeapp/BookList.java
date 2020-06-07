@@ -15,7 +15,7 @@ public class BookList extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasklist);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_books);
+//        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_books);
 
         new FirebaseDatabaseHelper().readBooks(new FirebaseDatabaseHelper.DataStatus() {
             @Override
