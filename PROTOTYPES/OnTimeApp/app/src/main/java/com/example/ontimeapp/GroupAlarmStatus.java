@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +55,7 @@ public class GroupAlarmStatus extends Fragment implements View.OnClickListener {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         goToTasks = rootView.findViewById(R.id.goToTasksBtn);
+        goToTasks.setOnClickListener(this);
 
         FirebaseDatabase.getInstance().getReference()
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -87,6 +89,11 @@ public class GroupAlarmStatus extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        final FragmentManagement fragmentManagement = new FragmentManagement();
+        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        int viewId = v.getId();
+        if(viewId == R.id.goToTasksBtn){
+            fragmentManagement.replaceMainFragment( (TextView) getActivity().findViewById(R.id.title_activity), transaction, new UserChecklist(), "YOUR CHECKLIST");
+        }
     }
 }
