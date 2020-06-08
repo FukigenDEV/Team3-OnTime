@@ -93,32 +93,30 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
 
                                         String name = snapshot2.child("name").getValue().toString();
                                         final String deviceToken = snapshot2.child("deviceToken").getValue().toString();
-                                        final ArrayList<String> phone = new ArrayList<>();
 
-                                        FirebaseDatabase.getInstance().getReference().child("Users")
-                                                .addListenerForSingleValueEvent(new ValueEventListener() {
-
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                                                            String token = snapshot.child("deviceToken").getValue().toString();
-                                                            if(token.equals(deviceToken)) {
-//                                                                phone.add(snapshot.child("phone").getValue().toString());
-                                                                Log.d("Phone", ""+snapshot.child("phone").getValue().toString());
-                                                            }
-                                                        }
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                        Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
-                                                    }
-
-                                                });
+//                                        FirebaseDatabase.getInstance().getReference().child("Users")
+//                                                .addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//                                                    @Override
+//                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+//                                                            String token = snapshot.child("deviceToken").getValue().toString();
+//                                                            if(token.equals(deviceToken)) {
+////                                                                phone.add(snapshot.child("phone").getValue().toString());
+//                                                                Log.d("Phone", ""+snapshot.child("phone").getValue().toString());
+//                                                            }
+//                                                        }
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//                                                        Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+//                                                    }
+//
+//                                                });
 
                                         progressbarName.setText(name);
                                         progressbarHolder.addView(progressbarItem);
-//                                        Log.d("ProgressBar", name + ": " + phone.get(0));
                                     }
                                 }
                             }
@@ -153,31 +151,4 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
             fragmentManagement.replaceMainFragment(addAlarm, transaction, addNewAlarm, "Add new Alarm");
         }
     }
-
-//    public String getPhoneNumber(final String token) {
-//        final List<String> phoneNumber = new ArrayList<>(1);
-//
-//        FirebaseDatabase.getInstance().getReference().child("Users")
-//                .addListenerForSingleValueEvent(new ValueEventListener() {
-//
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-//                            String deviceToken = snapshot.child("deviceToken").getValue().toString();
-//                            if(deviceToken.equals(token))              {
-//                                phoneNumber.add(snapshot.child("phone").getValue().toString());
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//                        Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                });
-//
-//        Log.d("PhoneReturn", ""+phoneNumber.get(0));
-//        return phoneNumber.get(0);
-//    }
 }
