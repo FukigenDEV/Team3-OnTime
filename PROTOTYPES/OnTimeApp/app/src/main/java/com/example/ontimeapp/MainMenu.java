@@ -34,6 +34,7 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class MainMenu extends Fragment {
     TextView title;
     ArrayList<String> groupnames = new ArrayList<>();
     ArrayList<String> groupcodes = new ArrayList<>();
+    ArrayList<String> usertasks = new ArrayList<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -76,20 +78,25 @@ public class MainMenu extends Fragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_mainmenu, container, false);
+        final View rootView = inflater.inflate(R.layout.activity_mainmenu, container, false);
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
+        final RecyclerView recyclerView1 = (RecyclerView) rootView.findViewById(R.id.recyclerview2);
+        recyclerView1.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext());
+        recyclerView1.setLayoutManager(linearLayoutManager1);
 
-        FirebaseDatabase.getInstance().getReference().child("Groups")
+        FirebaseDatabase.getInstance().getReference()
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         groupnames.clear();
                         groupcodes.clear();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        usertasks.clear();
+                        for (DataSnapshot snapshot : dataSnapshot.child("Groups").getChildren()){
                             if (snapshot.child("Members").hasChild(androidId)){
                                 String groupid = snapshot.getKey();
                                 String groupname = snapshot.child("groupName").getValue().toString();
@@ -97,9 +104,19 @@ public class MainMenu extends Fragment {
                                 groupnames.add(groupname);
                             }
                         }
-                        GroupsAdapter groupsAdapter = new GroupsAdapter(getContext(), groupnames, groupcodes);
+                        GroupsAdapter groupsAdapter = new GroupsAdapter(getContext(), groupnames, groupcodes, androidId);
                         recyclerView.setAdapter(groupsAdapter);
                         groupsAdapter.notifyDataSetChanged();
+
+                        for (DataSnapshot snapshot : dataSnapshot.child("Users").child(androidId).child("Tasks").getChildren()){
+                            usertasks.add(snapshot.getKey());
+                        }
+                        TasksAdapter tasksAdapter = new TasksAdapter(getContext(), usertasks, androidId);
+                        recyclerView1.setAdapter(tasksAdapter);
+                        tasksAdapter.notifyDataSetChanged();
+                        if(!usertasks.isEmpty()){
+                            rootView.findViewById(R.id.taskHeader).setVisibility(View.VISIBLE);
+                        }
 
                     }
                     @Override
