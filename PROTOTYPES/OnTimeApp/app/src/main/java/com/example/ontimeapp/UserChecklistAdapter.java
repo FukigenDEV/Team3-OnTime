@@ -22,7 +22,7 @@ public class UserChecklistAdapter extends RecyclerView.Adapter<UserChecklistAdap
     ArrayList<String> Tasks, Status;
     Context context;
 
-    String androidId;
+    String androidId, groupId;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView userTask;
@@ -35,11 +35,13 @@ public class UserChecklistAdapter extends RecyclerView.Adapter<UserChecklistAdap
     }
 
     @SuppressLint("HardwareIds")
-    public UserChecklistAdapter (Context context, ArrayList<String> tasks, ArrayList<String> status){
+    public UserChecklistAdapter (Context context, ArrayList<String> tasks, ArrayList<String> status, String groupId){
         this.context = context;
         this.Tasks = tasks;
         this.Status = status;
         this.androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        this.groupId = groupId;
+
     }
 
     @NonNull
@@ -59,7 +61,7 @@ public class UserChecklistAdapter extends RecyclerView.Adapter<UserChecklistAdap
                 public void onClick(View v) {
                     holder.checkBox.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.iconmonstr_checked_checkbox_9_240));
 
-                    FirebaseDatabase.getInstance().getReference().child("Users").child(androidId).child("Tasks").child(Tasks.get(position)).setValue("Finished");
+                    FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Members").child(androidId).child("Tasks").child(Tasks.get(position)).setValue("Finished");
 
                     Status.set(position, "Finished");
                     notifyDataSetChanged();
@@ -72,7 +74,7 @@ public class UserChecklistAdapter extends RecyclerView.Adapter<UserChecklistAdap
                 public void onClick(View v) {
                     holder.checkBox.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.iconmonstr_empty_checkbox_11_240));
 
-                    FirebaseDatabase.getInstance().getReference().child("Users").child(androidId).child("Tasks").child(Tasks.get(position)).setValue("Not finished");
+                    FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Members").child(androidId).child("Tasks").child(Tasks.get(position)).setValue("Not finished");
 
                     Status.set(position, "Not finished");
                     notifyDataSetChanged();

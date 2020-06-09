@@ -42,7 +42,7 @@ import java.util.Map;
 public class MainMenu extends Fragment {
 
     private static final String TAG = "MainMenu";
-    String androidId, userName, userToken;
+    String androidId, userName, userToken, userPhone;
     TextView title;
     ArrayList<String> groupnames = new ArrayList<>();
     ArrayList<String> groupcodes = new ArrayList<>();
@@ -58,6 +58,7 @@ public class MainMenu extends Fragment {
         androidId = args.getString("androidId");
         userName = args.getString("userName");
         userToken = args.getString("userToken");
+        userPhone = args.getString("userPhone");
 
         getActivity().findViewById(R.id.global_titlebar).setVisibility(View.VISIBLE);
         getActivity().findViewById(R.id.title_activity).setVisibility(View.VISIBLE);

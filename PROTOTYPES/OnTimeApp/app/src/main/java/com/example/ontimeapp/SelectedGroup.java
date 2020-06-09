@@ -102,7 +102,7 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
 //                                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
 //                                                            String token = snapshot.child("deviceToken").getValue().toString();
 //                                                            if(token.equals(deviceToken)) {
-////                                                                phone.add(snapshot.child("phone").getValue().toString());
+//                                                                phone.add(snapshot.child("phone").getValue().toString());
 //                                                                Log.d("Phone", ""+snapshot.child("phone").getValue().toString());
 //                                                            }
 //                                                        }

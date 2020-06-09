@@ -39,7 +39,6 @@ admin.initializeApp();
 
 
 
-
 //--------------------------------------------------------------------------------------------//
 // REMOVED TO NOT CONFLICT WITH THE NEW ALARM FUNCTIONS IN THE APP
 // MIGHT BE REWORKED IN THE FUTURE
@@ -77,6 +76,7 @@ admin.initializeApp();
 //     });
 //   });
 //--------------------------------------------------------------------------------------------//
+
 
 // SEND NOTIFICATION WHEN USER ADDED TO
 // Listens for new tokens added to /Groups/{GroupID}/Members/{AndroidID} and sends
@@ -145,4 +145,77 @@ exports.SetAlarmUserState = functions.database.ref('/Groups/{GroupID}/Alarms/{Al
     }, function (errorObject){
         console.log("The read failed: " + errorObject.code);
     });
+  });
+
+// NOTIFY OF ALARM
+// This function runs every 5 minutes and checks whether an alarm has gone of in the last five minutes.
+// If so, the members of the group get notified about the alarm in case their actual alarm has not gone off.
+exports.NotifyOfAlarm = functions.pubsub.schedule('every 5 minutes')
+  .onRun((context) => {
+    var currentTime = Date.now();
+
+    var ref = admin.database().ref(`/Groups`);
+    return ref.once("value", function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        if(childSnapshot.hasChild("Alarms")){
+          const groupID = childSnapshot.child("groupId").val();
+          const groupName = childSnapshot.child("groupName").val();
+          childSnapshot.forEach(function(childSnapshot2){
+            if(childSnapshot2.key === "Alarms"){
+              childSnapshot2.forEach(function(alarmsSnapshot){
+                const alarmName = alarmsSnapshot.child("name").val();
+                const alarmMillis = alarmsSnapshot.child("milis").val();
+                if (alarmMillis < currentTime && alarmMillis > (currentTime - 300000)){
+                  console.log(alarmName + " of " + groupID + " passes the check, notifications distributed");
+                  childSnapshot2.child(alarmName).child("MemberState").forEach(function(memberStateSnapshot){
+                    const memberID = memberStateSnapshot.key;
+                    const memberState = memberStateSnapshot.val();
+                    if (memberState === "NOT AWAKE!"){
+                      admin.database().ref(`/Users/${memberID}`).once('value', function(userSnapshot){
+                        const deviceToken = userSnapshot.child('deviceToken').val();
+                        const memberName = userSnapshot.child('name').val();
+                        const payload = {
+                          data: {
+                            title:  'Wake up ' + memberName + "!",
+                            body:   'An alarm in your squad ' + groupName +  ' is about to go off any minute! Make sure you do not miss it!'
+                          },
+                          token: deviceToken
+                        };
+                        admin.messaging().send(payload)
+                        .then(function(response) {
+                          return console.log("Successfully sent message:", response, deviceToken);
+                          })
+                          .catch(function(error) {
+                          return console.log("Error sending message:", error, deviceToken);
+                          });
+                      }, function (errorObject){
+                          return console.log("The read failed: " + errorObject.code);
+                      });
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+    }, function (errorObject){
+        return console.log("The read failed: " + errorObject.code);
+    });
+  });
+
+// NOTIFICATION OF A COMPLETED TASK
+// This function notifies the members of a squad when one of the members completes one of their tasks
+
+exports.taskCompletedNotification = functions.database.ref('/Users/{AndroidID}/Tasks/{task}')
+  .onWrite((change, context) => {
+    const androidId = context.params.AndroidID;
+    const taskName = context.params.task;
+    const oldState = change.before.val();
+    const newState = change.after.val();
+    console.log("old: " + oldState);
+    console.log("new: " + newState);
+    if(newState === "Finished"){
+      return null;
+    }
   });

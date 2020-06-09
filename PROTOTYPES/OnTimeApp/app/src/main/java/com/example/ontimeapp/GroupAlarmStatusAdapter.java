@@ -18,8 +18,9 @@ import java.util.ArrayList;
 
 public class GroupAlarmStatusAdapter extends RecyclerView.Adapter<GroupAlarmStatusAdapter.MyViewHolder> {
 
-    ArrayList<String> Name, Status, Number;
+    ArrayList<String> Name, Status, Number, userAndroidIds;
     Context context;
+    String currentAndroidId;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView memberAlarmStatus;
@@ -34,11 +35,13 @@ public class GroupAlarmStatusAdapter extends RecyclerView.Adapter<GroupAlarmStat
         }
     }
 
-    public GroupAlarmStatusAdapter(Context context, ArrayList<String> name, ArrayList<String> status, ArrayList<String> number){
+    public GroupAlarmStatusAdapter(Context context, ArrayList<String> name, ArrayList<String> status, ArrayList<String> number, ArrayList<String> userAndroidIds, String currentAndroidId){
         this.context = context;
         this.Name = name;
         this.Status = status;
         this.Number = number;
+        this.userAndroidIds = userAndroidIds;
+        this.currentAndroidId = currentAndroidId;
     }
 
     @NonNull
@@ -52,7 +55,10 @@ public class GroupAlarmStatusAdapter extends RecyclerView.Adapter<GroupAlarmStat
     public void onBindViewHolder(@NonNull final GroupAlarmStatusAdapter.MyViewHolder holder, final int position){
         holder.memberName.setText(Name.get(position));
         holder.memberAlarmStatus.setText(Status.get(position));
-        if(Status.get(position).equals("NOT AWAKE!")){
+        if (userAndroidIds.get(position).equals(currentAndroidId)){
+            holder.statusImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.iconmonstr_smiley_13_240));
+            holder.statusImage.setVisibility(View.VISIBLE);
+        }else if(Status.get(position).equals("NOT AWAKE!")){
             holder.statusImage.setVisibility(View.VISIBLE);
             holder.statusImage.setOnClickListener(new View.OnClickListener() {
                 @Override

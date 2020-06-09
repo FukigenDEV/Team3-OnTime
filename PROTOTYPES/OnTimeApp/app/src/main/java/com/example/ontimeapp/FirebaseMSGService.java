@@ -80,14 +80,15 @@ public class FirebaseMSGService extends FirebaseMessagingService {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
                 .setDefaults(Notification.DEFAULT_ALL)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setSmallIcon(R.drawable.logoontimetransparant2)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setVibrate(new long[] { 0, 1000, 1000, 1000, 1000 })
-                .setSound(alarmSound);;
+                .setSound(alarmSound)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(body));
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 

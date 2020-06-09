@@ -31,7 +31,7 @@ public class JoinGroup extends Fragment implements View.OnClickListener {
 
     private EditText etJoinGroupID;
     private Button joinGroupbtn;
-    String groupid, androidId, userName, userToken;
+    String groupid, androidId, userName, userToken, userPhone;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -40,6 +40,7 @@ public class JoinGroup extends Fragment implements View.OnClickListener {
         androidId = args.getString("androidId");
         userName = args.getString("userName");
         userToken = args.getString("userToken");
+        userPhone = args.getString("userPhone");
     }
 
     public JoinGroup() {
@@ -70,20 +71,30 @@ public class JoinGroup extends Fragment implements View.OnClickListener {
 
             Log.d(TAG, "test");
 
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference databaseReference1 = firebaseDatabase.getReference().child("Groups");
+            final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference databaseReference1 = firebaseDatabase.getReference();
 
             databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.child(groupid).exists()){
+                    if (dataSnapshot.child("Groups").child(groupid).exists()){
                         Log.d(TAG, "Group Exists, joining");
                         if (dataSnapshot.child(groupid).child("Members").child(androidId).exists()){
                             Toast.makeText(getActivity(), "You are already a member of this group", Toast.LENGTH_SHORT).show();
                         }else{
-                            User user = new User(userName, userToken, "");
-                            databaseReference1.child(groupid).child("Members").child(androidId).setValue(user);
+                            User user = new User(userName, userToken, userPhone);
+                            databaseReference1.child("Groups").child(groupid).child("Members").child(androidId).setValue(user);
                             Toast.makeText(getActivity(), "Successfully joined the group!", Toast.LENGTH_SHORT).show();
+                            for(DataSnapshot snapshot : dataSnapshot.child("Users").child(androidId).child("Tasks").getChildren()){
+                                String userTask = snapshot.getKey();
+                                DatabaseReference databaseReference2 = firebaseDatabase.getReference().child("Groups").child(groupid).child("Members").child(androidId).child("Tasks").child(userTask);
+                                databaseReference2.setValue("Not finished");
+                            }
+                            for(DataSnapshot snapshot : dataSnapshot.child("Groups").child(groupid).child("Alarms").getChildren()){
+                                String alarmName = snapshot.getKey();
+                                DatabaseReference databaseReference2 = firebaseDatabase.getReference().child("Groups").child(groupid).child("Alarms").child(alarmName).child("MemberState").child(androidId);
+                                databaseReference2.setValue("NOT AWAKE!");
+                            }
                             FragmentTransaction transaction = getFragmentManager().beginTransaction();
                             FragmentManagement fragmentManagement = new FragmentManagement();
                             TextView title = getActivity().findViewById(R.id.title_activity);

@@ -17,8 +17,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
@@ -29,7 +32,7 @@ public class SetTasksActivity extends Fragment implements View.OnClickListener {
     private EditText task;
     private Button confirm;
 
-    String tasktext, userName, userToken, androidId;
+    String tasktext, userName, userToken, androidId, userPhone;
 
     private static final String TAG = "SetTasks";
 
@@ -40,6 +43,7 @@ public class SetTasksActivity extends Fragment implements View.OnClickListener {
         androidId = args.getString("androidId");
         userName = args.getString("userName");
         userToken = args.getString("userToken");
+        userPhone = args.getString("userPhone");
     }
 
     public SetTasksActivity() {
@@ -82,19 +86,28 @@ public class SetTasksActivity extends Fragment implements View.OnClickListener {
                                 String token = task.getResult().getToken();
                                 Log.d(TAG, token);
                                 Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
-                                User user = new User(tasktext, token, "");
-                                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                                final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                                 DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(androidId).child("Tasks").child(tasktext);
                                 databaseReference.setValue("Not finished");
-                                //databaseReference.setValue(user);
-                                Toast.makeText(getContext(), "Database Updated", Toast.LENGTH_SHORT).show();
 
-//                                Fragment mainMenu = new MainMenu();
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString("androidId", androidId);
-//                                bundle.putString("userName", userName);
-//                                bundle.putString("userToken", userToken);
-//                                mainMenu.setArguments(bundle);
+                                FirebaseDatabase.getInstance().getReference().child("Groups").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                            if(snapshot.child("Members").hasChild(androidId)){
+                                                DatabaseReference databaseReference2 = firebaseDatabase.getReference().child("Groups").child(snapshot.getKey()).child("Members").child(androidId).child("Tasks").child(tasktext);
+                                                databaseReference2.setValue("Not finished");
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                                Toast.makeText(getContext(), "Task successfully added!", Toast.LENGTH_SHORT).show();
 
                                 fragmentManagement.replaceMainFragment((TextView)getActivity().findViewById(R.id.title_activity), transaction, getFragmentManager().findFragmentByTag("TEAMS"), "TEAMS");
                             }
