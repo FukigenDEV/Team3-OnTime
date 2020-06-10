@@ -1,7 +1,9 @@
 package com.example.ontimeapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,20 +26,23 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class GroupAlarmStatus extends Fragment implements View.OnClickListener {
-    String groupId, alarmName;
+    String groupId, alarmName, currentAndroidId;
     Button goToTasks;
     TextView title;
 
     ArrayList<String> userNames = new ArrayList<>();
     ArrayList<String> userStatus = new ArrayList<>();
     ArrayList<String> userNumbers = new ArrayList<>();
+    ArrayList<String> userAndroidIds = new ArrayList<>();
 
+    @SuppressLint("HardwareIds")
     @Override
     public void onAttach(@NonNull Context context){
         super.onAttach(context);
         Bundle args = getArguments();
         groupId = args.getString("groupId");
         alarmName = args.getString("alarmName");
+        currentAndroidId = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
     public GroupAlarmStatus(){
@@ -72,8 +77,11 @@ public class GroupAlarmStatus extends Fragment implements View.OnClickListener {
                             userNames.add(userName);
                             userStatus.add(userState);
                             userNumbers.add(userNumber);
+                            userAndroidIds.add(androidId);
                         }
-                        GroupAlarmStatusAdapter groupAlarmStatusAdapter = new GroupAlarmStatusAdapter(getContext(),userNames, userStatus, userNumbers);
+                        System.out.println(currentAndroidId);
+                        System.out.println(userAndroidIds);
+                        GroupAlarmStatusAdapter groupAlarmStatusAdapter = new GroupAlarmStatusAdapter(getContext(),userNames, userStatus, userNumbers, userAndroidIds, currentAndroidId);
                         recyclerView.setAdapter(groupAlarmStatusAdapter);
                         groupAlarmStatusAdapter.notifyDataSetChanged();
                     }
@@ -93,7 +101,11 @@ public class GroupAlarmStatus extends Fragment implements View.OnClickListener {
         final FragmentTransaction transaction = getFragmentManager().beginTransaction();
         int viewId = v.getId();
         if(viewId == R.id.goToTasksBtn){
-            fragmentManagement.replaceMainFragment( (TextView) getActivity().findViewById(R.id.title_activity), transaction, new UserChecklist(), "YOUR CHECKLIST");
+            Bundle bundle = new Bundle();
+            bundle.putString("groupId", groupId);
+            Fragment userChecklist = new UserChecklist();
+            userChecklist.setArguments(bundle);
+            fragmentManagement.replaceMainFragment( (TextView) getActivity().findViewById(R.id.title_activity), transaction, userChecklist, "YOUR CHECKLIST");
         }
     }
 }

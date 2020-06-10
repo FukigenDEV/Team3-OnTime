@@ -91,6 +91,7 @@ public class CreateUser extends Fragment implements View.OnClickListener {
                             Log.d(TAG, "androidId: "+androidId);
                             bundle.putString("userName", name);
                             bundle.putString("userToken", token);
+                            bundle.putString("userPhone", phone);
                             mainMenu.setArguments(bundle);
 
                             fragmentManagement.setMainFragment((TextView)getActivity().findViewById(R.id.title_activity), transaction, mainMenu, "TEAMS");

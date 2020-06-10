@@ -6,12 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -53,8 +57,21 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.MyViewHolder
             @Override
             public void onClick(View v) {
                 FirebaseDatabase.getInstance().getReference().child("Users").child(androidId).child("Tasks").child(Tasks.get(position)).removeValue();
-                Tasks.remove(position);
-                notifyDataSetChanged();
+                FirebaseDatabase.getInstance().getReference().child("Groups").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            FirebaseDatabase.getInstance().getReference().child("Groups").child(snapshot.getKey()).child("Members").child(androidId).child("Tasks").child(Tasks.get(position)).removeValue();
+                        }
+                        Tasks.remove(position);
+                        notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(context, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

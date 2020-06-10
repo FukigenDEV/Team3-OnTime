@@ -63,7 +63,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/sgHeader1"
                 app:layout_constraintTop_toTopOf="@id/sgHeader1"
                 app:layout_constraintStart_toStartOf="@id/sgHeader1"
-                />
+                android:layout_marginLeft="5dp" />
 
             <TextView
                 android:id="@+id/groupcode"
@@ -71,7 +71,7 @@
                 android:textSize="25sp"
                 android:textColor="@color/colorGlobal4"
                 android:fontFamily="@font/opensans_regular"
-                android:padding="15dp"
+                android:padding="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/sgHeader1"
@@ -81,26 +81,34 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/progressbarHolder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+        <RelativeLayout
+            android:id="@+id/relativelayout2"
+            android:layout_width="0dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="@id/groupcodeHolder"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/groupcodeHolder"
-            />
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview2"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/alarmsholder"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/progressbarHolder"
+            app:layout_constraintTop_toBottomOf="@id/relativelayout2"
             >
 
             <ImageView
@@ -125,7 +133,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/sgHeader2"
                 app:layout_constraintTop_toTopOf="@id/sgHeader2"
                 app:layout_constraintStart_toStartOf="@id/sgHeader2"
-                />
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:id="@+id/addAlarmBtn"
@@ -158,4 +166,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.core.widget.NestedScrollView>

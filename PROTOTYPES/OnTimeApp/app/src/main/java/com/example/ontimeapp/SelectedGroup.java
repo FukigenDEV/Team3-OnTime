@@ -1,7 +1,9 @@
 package com.example.ontimeapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,18 +31,24 @@ import java.util.List;
 public class SelectedGroup extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "SelectedGroup";
-    String groupName, groupCode;
+    String groupName, groupCode, androidId;
     Button addAlarm;
     ArrayList<String> AlarmName = new ArrayList<>();
     ArrayList<String> AlarmDate = new ArrayList<>();
     ArrayList<String> AlarmTime = new ArrayList<>();
 
+    ArrayList<String> progressPhone = new ArrayList<>();
+    ArrayList<String> progressName = new ArrayList<>();
+    ArrayList<String> progressAndroidId = new ArrayList<>();
+
+    @SuppressLint("HardwareIds")
     @Override
     public void onAttach(@NonNull Context context){
         super.onAttach(context);
         Bundle args = getArguments();
         groupName = args.getString("groupName");
         groupCode = args.getString("groupCode");
+        androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
     public SelectedGroup(){
@@ -61,10 +69,14 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        final RecyclerView recyclerView1 = (RecyclerView) rootView.findViewById(R.id.recyclerview2);
+        recyclerView1.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext());
+        recyclerView1.setLayoutManager(linearLayoutManager1);
+
         addAlarm = rootView.findViewById(R.id.addAlarmBtn);
         addAlarm.setOnClickListener(this);
 
-        final LinearLayout progressbarHolder = (LinearLayout) rootView.findViewById(R.id.progressbarHolder);
 
         FirebaseDatabase.getInstance().getReference().child("Groups")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -73,6 +85,8 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
                         AlarmName.clear();
                         AlarmDate.clear();
                         AlarmTime.clear();
+                        progressPhone.clear();
+                        progressName.clear();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                             if (groupCode.equals(snapshot.getKey())){
                                 if (snapshot.hasChild("Alarms")){
@@ -88,35 +102,12 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
 
                                 if (snapshot.hasChild("Members")){
                                     for (DataSnapshot snapshot2 : snapshot.child("Members").getChildren()){
-                                        View progressbarItem = inflater.inflate(R.layout.task_progress_item, progressbarHolder, false);
-                                        TextView progressbarName = progressbarItem.findViewById(R.id.userTask);
-
                                         String name = snapshot2.child("name").getValue().toString();
-                                        final String deviceToken = snapshot2.child("deviceToken").getValue().toString();
-
-//                                        FirebaseDatabase.getInstance().getReference().child("Users")
-//                                                .addListenerForSingleValueEvent(new ValueEventListener() {
-//
-//                                                    @Override
-//                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-//                                                            String token = snapshot.child("deviceToken").getValue().toString();
-//                                                            if(token.equals(deviceToken)) {
-////                                                                phone.add(snapshot.child("phone").getValue().toString());
-//                                                                Log.d("Phone", ""+snapshot.child("phone").getValue().toString());
-//                                                            }
-//                                                        }
-//                                                    }
-//
-//                                                    @Override
-//                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//                                                        Toast.makeText(getContext(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
-//                                                    }
-//
-//                                                });
-
-                                        progressbarName.setText(name);
-                                        progressbarHolder.addView(progressbarItem);
+                                        String phone = snapshot2.child("phone").getValue().toString();
+                                        String androidId = snapshot2.getKey();
+                                        progressName.add(name);
+                                        progressPhone.add(phone);
+                                        progressAndroidId.add(androidId);
                                     }
                                 }
                             }
@@ -124,6 +115,10 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
                         AlarmsAdapter alarmsAdapter = new AlarmsAdapter(getContext(), AlarmName, AlarmDate, AlarmTime, groupCode);
                         recyclerView.setAdapter(alarmsAdapter);
                         alarmsAdapter.notifyDataSetChanged();
+
+                        ProgressBarAdapter progressBarAdapter = new ProgressBarAdapter(getContext(), progressName, progressPhone, progressAndroidId, groupCode);
+                        recyclerView1.setAdapter(progressBarAdapter);
+                        progressBarAdapter.notifyDataSetChanged();
                     }
 
                     @Override

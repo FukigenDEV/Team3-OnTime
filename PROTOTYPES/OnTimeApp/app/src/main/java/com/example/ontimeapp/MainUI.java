@@ -50,7 +50,7 @@ public class MainUI extends AppCompatActivity {
     FrameLayout flGlobal;
     LayoutInflater layoutInflater;
     String androidId;
-    Bundle bundle;
+    Bundle bundle, bundle1;
 
     NavItem[] navItemArray;
     List<LinearLayout> navLayoutList;
@@ -99,22 +99,22 @@ public class MainUI extends AppCompatActivity {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
                 if (dataSnapshot.child(androidId).exists()) {
-                    Toast.makeText(context, "Android ID exists in database", Toast.LENGTH_SHORT).show();
                     User user = dataSnapshot.child(androidId).getValue(User.class);
 
                     String userName = user.getName();
                     String userToken = user.getDeviceToken();
+                    String userPhone = user.getPhone();
 
                     Fragment mainMenu = new MainMenu();
                     bundle = new Bundle();
                     bundle.putString("androidId", androidId);
                     bundle.putString("userName", userName);
                     bundle.putString("userToken", userToken);
+                    bundle.putString("userPhone", userPhone);
                     mainMenu.setArguments(bundle);
 
                     fragmentManagement.setMainFragment(activityTitle, transaction, mainMenu, "TEAMS");
                 } else {
-                    Toast.makeText(context, androidId + "Android ID does not exist in database", Toast.LENGTH_SHORT).show();
 
                     Fragment createUser = new CreateUser();
                     Bundle bundle = new Bundle();
@@ -200,12 +200,36 @@ public class MainUI extends AppCompatActivity {
             }
         });
 
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.child(androidId).getValue(User.class);
+
+                String userName = user.getName();
+                String userToken = user.getDeviceToken();
+                String userPhone = user.getPhone();
+
+                Fragment mainMenu = new MainMenu();
+                bundle1 = new Bundle();
+                bundle1.putString("androidId", androidId);
+                bundle1.putString("userName", userName);
+                bundle1.putString("userToken", userToken);
+                bundle1.putString("userPhone", userPhone);
+                mainMenu.setArguments(bundle);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(context, databaseError.getCode(), Toast.LENGTH_SHORT);
+            }
+        });
+
         subnavButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 Fragment setTaskActivity = new SetTasksActivity();
-                setTaskActivity.setArguments(bundle);
+                setTaskActivity.setArguments(bundle1);
                 fragmentManagement.replaceMainFragment(activityTitle, transaction, setTaskActivity, "SET TASKS");
             }
         });
@@ -215,7 +239,7 @@ public class MainUI extends AppCompatActivity {
             public void onClick(View view) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 Fragment joinGroup = new JoinGroup();
-                joinGroup.setArguments(bundle);
+                joinGroup.setArguments(bundle1);
                 fragmentManagement.replaceMainFragment(activityTitle, transaction, joinGroup, "JOIN TEAM");
             }
         });
@@ -225,7 +249,7 @@ public class MainUI extends AppCompatActivity {
             public void onClick(View view) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 Fragment createGroup = new CreateGroup();
-                createGroup.setArguments(bundle);
+                createGroup.setArguments(bundle1);
                 fragmentManagement.replaceMainFragment(activityTitle, transaction, createGroup, "CREATE TEAM");
             }
         });

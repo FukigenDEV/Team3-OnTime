@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class UserChecklist extends Fragment {
     @SuppressLint("HardwareIds")
-    String androidId;
+    String androidId, groupId;
     ArrayList<String> userTasks = new ArrayList<>();
     ArrayList<String> taskStates = new ArrayList<>();
 
@@ -31,6 +31,8 @@ public class UserChecklist extends Fragment {
     @Override
     public void onAttach(@NonNull Context context){
         super.onAttach(context);
+        Bundle bundle = getArguments();
+        groupId = bundle.getString("groupId");
         androidId = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
@@ -52,11 +54,11 @@ public class UserChecklist extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userTasks.clear();
                 taskStates.clear();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.child("Users").child(androidId).child("Tasks").getChildren()){
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.child("Groups").child(groupId).child("Members").child(androidId).child("Tasks").getChildren()){
                     userTasks.add(dataSnapshot1.getKey());
                     taskStates.add(dataSnapshot1.getValue().toString());
                 }
-                UserChecklistAdapter userChecklistAdapter = new UserChecklistAdapter(getContext(), userTasks, taskStates);
+                UserChecklistAdapter userChecklistAdapter = new UserChecklistAdapter(getContext(), userTasks, taskStates, groupId);
                 recyclerView.setAdapter(userChecklistAdapter);
                 userChecklistAdapter.notifyDataSetChanged();
             }
