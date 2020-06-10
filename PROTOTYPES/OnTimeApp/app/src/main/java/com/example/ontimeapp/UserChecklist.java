@@ -54,7 +54,7 @@ public class UserChecklist extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userTasks.clear();
                 taskStates.clear();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.child("Users").child(androidId).child("Tasks").getChildren()){
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.child("Groups").child(groupId).child("Members").child(androidId).child("Tasks").getChildren()){
                     userTasks.add(dataSnapshot1.getKey());
                     taskStates.add(dataSnapshot1.getValue().toString());
                 }

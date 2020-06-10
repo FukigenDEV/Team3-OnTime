@@ -39,6 +39,7 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
 
     ArrayList<String> progressPhone = new ArrayList<>();
     ArrayList<String> progressName = new ArrayList<>();
+    ArrayList<String> progressAndroidId = new ArrayList<>();
 
     @SuppressLint("HardwareIds")
     @Override
@@ -103,8 +104,10 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
                                     for (DataSnapshot snapshot2 : snapshot.child("Members").getChildren()){
                                         String name = snapshot2.child("name").getValue().toString();
                                         String phone = snapshot2.child("phone").getValue().toString();
+                                        String androidId = snapshot2.getKey();
                                         progressName.add(name);
                                         progressPhone.add(phone);
+                                        progressAndroidId.add(androidId);
                                     }
                                 }
                             }
@@ -113,7 +116,7 @@ public class SelectedGroup extends Fragment implements View.OnClickListener {
                         recyclerView.setAdapter(alarmsAdapter);
                         alarmsAdapter.notifyDataSetChanged();
 
-                        ProgressBarAdapter progressBarAdapter = new ProgressBarAdapter(getContext(), progressName, progressPhone, groupCode, androidId);
+                        ProgressBarAdapter progressBarAdapter = new ProgressBarAdapter(getContext(), progressName, progressPhone, progressAndroidId, groupCode);
                         recyclerView1.setAdapter(progressBarAdapter);
                         progressBarAdapter.notifyDataSetChanged();
                     }

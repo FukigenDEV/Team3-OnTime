@@ -92,7 +92,7 @@
                 app:layout_constraintStart_toStartOf="@id/startTask"
                 app:layout_constraintTop_toTopOf="@id/startTask"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/endTask"
+                app:layout_constraintEnd_toEndOf="@id/startTask"
                 />
 
 
@@ -132,7 +132,7 @@
 
                 <ImageView
                     android:id="@+id/starttaskCircle1_3"
-                    android:src="@drawable/task_progress_circle3"
+                    android:src="@drawable/task_progress_circle3_uncomplete"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     app:layout_constraintTop_toTopOf="@id/starttaskCircle1_2"
@@ -177,7 +177,7 @@
 
                 <ImageView
                     android:id="@+id/taskCircle1_3"
-                    android:src="@drawable/task_progress_circle3"
+                    android:src="@drawable/task_progress_circle3_uncomplete"
                     android:layout_width="13dp"
                     android:layout_height="13dp"
                     app:layout_constraintTop_toTopOf="@id/taskCircle1_2"
@@ -222,7 +222,7 @@
 
                 <ImageView
                     android:id="@+id/taskCircle2_3"
-                    android:src="@drawable/task_progress_circle3"
+                    android:src="@drawable/task_progress_circle3_uncomplete"
                     android:layout_width="13dp"
                     android:layout_height="13dp"
                     app:layout_constraintTop_toTopOf="@id/taskCircle2_2"
@@ -267,7 +267,7 @@
 
                 <ImageView
                     android:id="@+id/taskCircle3_3"
-                    android:src="@drawable/task_progress_circle3"
+                    android:src="@drawable/task_progress_circle3_uncomplete"
                     android:layout_width="13dp"
                     android:layout_height="13dp"
                     app:layout_constraintTop_toTopOf="@id/taskCircle3_2"
@@ -312,7 +312,7 @@
 
                 <ImageView
                     android:id="@+id/taskCircle4_3"
-                    android:src="@drawable/task_progress_circle3"
+                    android:src="@drawable/task_progress_circle3_uncomplete"
                     android:layout_width="13dp"
                     android:layout_height="13dp"
                     app:layout_constraintTop_toTopOf="@id/taskCircle4_2"
@@ -332,7 +332,8 @@
                 app:layout_constraintStart_toEndOf="@id/task4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"
-                android:layout_marginStart="10dp">
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp">
 
                 <ImageView
                     android:id="@+id/endTask1_1"
@@ -358,7 +359,7 @@
 
                 <ImageView
                     android:id="@+id/endTask1_3"
-                    android:src="@drawable/task_progress_circle3"
+                    android:src="@drawable/task_progress_circle3_uncomplete"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     app:layout_constraintTop_toTopOf="@id/endTask1_2"
