@@ -200,33 +200,35 @@ public class MainUI extends AppCompatActivity {
             }
         });
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.child(androidId).getValue(User.class);
-
-                String userName = user.getName();
-                String userToken = user.getDeviceToken();
-                String userPhone = user.getPhone();
-
-                Fragment mainMenu = new MainMenu();
-                bundle1 = new Bundle();
-                bundle1.putString("androidId", androidId);
-                bundle1.putString("userName", userName);
-                bundle1.putString("userToken", userToken);
-                bundle1.putString("userPhone", userPhone);
-                mainMenu.setArguments(bundle);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(context, databaseError.getCode(), Toast.LENGTH_SHORT);
-            }
-        });
-
         subnavButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.child("Users").child(androidId).getValue(User.class);
+
+                        String userName = user.getName();
+                        String userToken = user.getDeviceToken();
+                        String userPhone = user.getPhone();
+
+                        bundle1 = new Bundle();
+                        bundle1.putString("androidId", androidId);
+                        bundle1.putString("userName", userName);
+                        bundle1.putString("userToken", userToken);
+                        bundle1.putString("userPhone", userPhone);
+
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        Fragment setTaskActivity = new SetTasksActivity();
+                        setTaskActivity.setArguments(bundle1);
+                        fragmentManagement.replaceMainFragment(activityTitle, transaction, setTaskActivity, "SET TASKS");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(context, databaseError.getCode(), Toast.LENGTH_SHORT);
+                    }
+                });
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 Fragment setTaskActivity = new SetTasksActivity();
                 setTaskActivity.setArguments(bundle1);
@@ -237,20 +239,64 @@ public class MainUI extends AppCompatActivity {
         subnavButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                Fragment joinGroup = new JoinGroup();
-                joinGroup.setArguments(bundle1);
-                fragmentManagement.replaceMainFragment(activityTitle, transaction, joinGroup, "JOIN TEAM");
+                FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.child("Users").child(androidId).getValue(User.class);
+
+                        String userName = user.getName();
+                        String userToken = user.getDeviceToken();
+                        String userPhone = user.getPhone();
+
+                        bundle1 = new Bundle();
+                        bundle1.putString("androidId", androidId);
+                        bundle1.putString("userName", userName);
+                        bundle1.putString("userToken", userToken);
+                        bundle1.putString("userPhone", userPhone);
+
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        Fragment joinGroup = new JoinGroup();
+                        joinGroup.setArguments(bundle1);
+                        fragmentManagement.replaceMainFragment(activityTitle, transaction, joinGroup, "JOIN TEAM");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(context, databaseError.getCode(), Toast.LENGTH_SHORT);
+                    }
+                });
             }
         });
 
         subnavButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                Fragment createGroup = new CreateGroup();
-                createGroup.setArguments(bundle1);
-                fragmentManagement.replaceMainFragment(activityTitle, transaction, createGroup, "CREATE TEAM");
+                FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.child("Users").child(androidId).getValue(User.class);
+
+                        String userName = user.getName();
+                        String userToken = user.getDeviceToken();
+                        String userPhone = user.getPhone();
+
+                        bundle1 = new Bundle();
+                        bundle1.putString("androidId", androidId);
+                        bundle1.putString("userName", userName);
+                        bundle1.putString("userToken", userToken);
+                        bundle1.putString("userPhone", userPhone);
+
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        Fragment createGroup = new CreateGroup();
+                        createGroup.setArguments(bundle1);
+                        fragmentManagement.replaceMainFragment(activityTitle, transaction, createGroup, "CREATE TEAM");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(context, databaseError.getCode(), Toast.LENGTH_SHORT);
+                    }
+                });
             }
         });
 
