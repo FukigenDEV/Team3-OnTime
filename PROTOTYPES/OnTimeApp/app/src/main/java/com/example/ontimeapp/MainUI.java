@@ -229,10 +229,6 @@ public class MainUI extends AppCompatActivity {
                         Toast.makeText(context, databaseError.getCode(), Toast.LENGTH_SHORT);
                     }
                 });
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                Fragment setTaskActivity = new SetTasksActivity();
-                setTaskActivity.setArguments(bundle1);
-                fragmentManagement.replaceMainFragment(activityTitle, transaction, setTaskActivity, "SET TASKS");
             }
         });
 
