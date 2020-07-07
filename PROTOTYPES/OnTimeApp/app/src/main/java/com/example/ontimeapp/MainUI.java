@@ -326,9 +326,15 @@ public class MainUI extends AppCompatActivity {
 
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.global_framelayout);
         if(!(f instanceof MainMenu) && !(f instanceof CreateUser)) {
-            fragmentManagement.replaceMainFragment((TextView) findViewById(R.id.title_activity), transaction, getSupportFragmentManager().findFragmentByTag("TEAMS"), "TEAMS");
+            if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+                getSupportFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
+            }
         } else {
-            finishAffinity();
+            //Primary fragment
+            moveTaskToBack(true);
         }
     }
 }
+

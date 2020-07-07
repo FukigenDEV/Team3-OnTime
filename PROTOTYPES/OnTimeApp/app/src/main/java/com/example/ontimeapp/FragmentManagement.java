@@ -25,6 +25,7 @@ class FragmentManagement {
     // Replaces current fragment with fragment in parameters without adding to back stack
     void replaceMainFragment(TextView activityTitle, FragmentTransaction transaction, Fragment fragment, String title) {
         transaction.replace(R.id.global_framelayout, fragment, title);
+        transaction.addToBackStack(title);
         transaction.commit();
 
         Log.d("TAG", title);
